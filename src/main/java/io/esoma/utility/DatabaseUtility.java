@@ -17,7 +17,7 @@ public class DatabaseUtility {
 	 * 
 	 * @return the string array containing the database variables.
 	 */
-	private static String[] getOracleDBVariables() {
+	static String[] getOracleDBVariables() {
 
 		return System.getenv("KHR_AGGRE").split(";@");
 
@@ -78,9 +78,15 @@ public class DatabaseUtility {
 	 * 
 	 * @return the string array containing the database variables.
 	 */
-	private static String[] getH2DBVariables() {
+	static String[] getH2DBVariables() {
 
-		return System.getenv("H2_AGGRE").split(";@");
+		String[] h2Vars = System.getenv("H2_AGGRE").split(";@");
+
+		if (h2Vars.length == 3) {
+			return new String[] { h2Vars[0], h2Vars[1], h2Vars[2], "" };
+		} else {
+			return h2Vars;
+		}
 
 	}
 
