@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- Enable Annotated Class Configuration -->
+	<context:component-scan
+		base-package="io.esoma.khr"></context:component-scan>
+
+	<!-- Enable Annotated Class Dependency Injection -->
+	<mvc:annotation-driven />
+
+	<!-- Define CORS Policies -->
+	<mvc:cors>
+		<mvc:mapping path="/**"
+			allowed-origins="http://localhost:4200, http://esoma-sekh.s3-website.us-east-2.amazonaws.com"
+			allowed-methods="POST, GET, PUT, OPTIONS, DELETE" allowed-headers="*"
+			max-age="4800" />
+	</mvc:cors>
+
+</beans>
