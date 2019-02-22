@@ -15,18 +15,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/spring-context.xml")
-public class HibernateOracleConfigurationTest {
+public class HibernateH2ConfigurationTest {
 
-	private SessionFactory oracleDBSessionFactory;
+	private SessionFactory h2DBSessionFactory;
 
-	public SessionFactory getOracleDBSessionFactory() {
-		return oracleDBSessionFactory;
+	public SessionFactory getH2DBSessionFactory() {
+		return h2DBSessionFactory;
 	}
 
 	@Autowired
-	@Qualifier(value = "oracleDBSessionFactory")
-	public void setOracleDBSessionFactory(SessionFactory oracleDBSessionFactory) {
-		this.oracleDBSessionFactory = oracleDBSessionFactory;
+	@Qualifier(value = "h2DBSessionFactory")
+	public void setH2DBSessionFactory(SessionFactory h2dbSessionFactory) {
+		h2DBSessionFactory = h2dbSessionFactory;
 	}
 
 	@BeforeClass
@@ -39,17 +39,17 @@ public class HibernateOracleConfigurationTest {
 		// No content yet.
 	}
 
-	// Test Oracle Database session factory connection.
+	// Test H2 database session factory connection.
 	@Test
-	public void testOracleDBSessionFactory() throws Exception {
+	public void testH2DBSessionFactory() throws Exception {
 
-		assertNotNull(oracleDBSessionFactory.openSession());
-		assertTrue(oracleDBSessionFactory.isOpen());
-		assertNotNull(oracleDBSessionFactory.getCurrentSession().beginTransaction());
-		oracleDBSessionFactory.getCurrentSession().getTransaction().commit();
-		oracleDBSessionFactory.getCurrentSession().close();
-		oracleDBSessionFactory.close();
-		assertTrue(oracleDBSessionFactory.isClosed());
+		assertNotNull(h2DBSessionFactory.openSession());
+		assertTrue(h2DBSessionFactory.isOpen());
+		assertNotNull(h2DBSessionFactory.getCurrentSession().beginTransaction());
+		h2DBSessionFactory.getCurrentSession().getTransaction().commit();
+		h2DBSessionFactory.getCurrentSession().close();
+		h2DBSessionFactory.close();
+		assertTrue(h2DBSessionFactory.isClosed());
 
 	}
 
