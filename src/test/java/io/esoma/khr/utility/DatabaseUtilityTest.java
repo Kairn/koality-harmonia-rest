@@ -1,4 +1,4 @@
-package io.esoma.utility;
+package io.esoma.khr.utility;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.esoma.khr.utility.DatabaseUtility;
 
 public class DatabaseUtilityTest {
 

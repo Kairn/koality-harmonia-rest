@@ -110,6 +110,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.1.Final</version>
 		</dependency>
+		<!-- Tomcat DBCP -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>9.0.16</version>
+		</dependency>
 		<!--OJDBC -->
 		<dependency>
 			<groupId>com.oracle.ojdbc</groupId>

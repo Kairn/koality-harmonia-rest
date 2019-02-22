@@ -1,4 +1,4 @@
-package io.esoma.utility;
+package io.esoma.khr.utility;
 
 /**
  * 
