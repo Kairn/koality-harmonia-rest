@@ -85,7 +85,7 @@ public class HibernateH2Configuration {
 		h2HibernateProperties.setProperty("hibernate.connection.pool_size", "1");
 		h2HibernateProperties.setProperty("hibernate.current_session_context_class", "thread");
 		h2HibernateProperties.setProperty("hibernate.connection.autocommit", "false");
-		h2HibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create");
+		h2HibernateProperties.setProperty("hibernate.hbm2ddl.auto", "validate");
 
 		return h2HibernateProperties;
 
