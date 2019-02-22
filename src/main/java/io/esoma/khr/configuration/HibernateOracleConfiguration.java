@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,6 +24,7 @@ import io.esoma.khr.utility.DatabaseUtility;
  * @author Eddy Soma
  *
  */
+@Lazy
 @Configuration
 @EnableTransactionManagement
 public class HibernateOracleConfiguration {

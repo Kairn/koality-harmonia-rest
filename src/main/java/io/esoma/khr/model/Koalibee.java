@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -38,6 +39,7 @@ public class Koalibee implements Serializable {
 	private byte[] avatar;
 	private String avatarType;
 
+	private Credentials credentials;
 	private List<Album> albumList;
 	private String avatarDataUrl;
 
@@ -115,6 +117,15 @@ public class Koalibee implements Serializable {
 
 	public void setAvatarType(String avatarType) {
 		this.avatarType = avatarType;
+	}
+
+	@OneToOne(mappedBy = "koalibee")
+	public Credentials getCredentials() {
+		return credentials;
+	}
+
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,7 +29,8 @@ public class Credentials implements Serializable {
 	private String email;
 	private String passwordHash;
 	private String passwordSalt;
-	private int koalibeeId;
+
+	private Koalibee koalibee;
 
 	public Credentials() {
 		super();
@@ -77,13 +80,14 @@ public class Credentials implements Serializable {
 		this.passwordSalt = passwordSalt;
 	}
 
-	@Column(name = "KOALIBEE_ID")
-	public int getKoalibeeId() {
-		return koalibeeId;
+	@OneToOne
+	@JoinColumn(name = "KOALIBEE_ID")
+	public Koalibee getKoalibee() {
+		return koalibee;
 	}
 
-	public void setKoalibeeId(int koalibeeId) {
-		this.koalibeeId = koalibeeId;
+	public void setKoalibee(Koalibee koalibee) {
+		this.koalibee = koalibee;
 	}
 
 	@Override
@@ -91,7 +95,7 @@ public class Credentials implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + credentialsId;
-		result = prime * result + koalibeeId;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -110,7 +114,11 @@ public class Credentials implements Serializable {
 		if (credentialsId != other.credentialsId) {
 			return false;
 		}
-		if (koalibeeId != other.koalibeeId) {
+		if (email == null) {
+			if (other.email != null) {
+				return false;
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
 		}
 		return true;
@@ -118,7 +126,7 @@ public class Credentials implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Credentials [credentialsId=" + credentialsId + ", email=" + email + ", koalibeeId=" + koalibeeId + "]";
+		return "Credentials [credentialsId=" + credentialsId + ", email=" + email + "]";
 	}
 
 }

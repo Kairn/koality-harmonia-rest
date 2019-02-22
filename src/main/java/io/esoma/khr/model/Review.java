@@ -29,7 +29,7 @@ public class Review implements Serializable {
 
 	private int reviewId;
 	private int rating;
-	private int reviewComment;
+	private String reviewComment;
 
 	private Album album;
 	private Koalibee koalibee;
@@ -67,11 +67,11 @@ public class Review implements Serializable {
 	}
 
 	@Column(name = "REVIEW_COMMENT")
-	public int getReviewComment() {
+	public String getReviewComment() {
 		return reviewComment;
 	}
 
-	public void setReviewComment(int reviewComment) {
+	public void setReviewComment(String reviewComment) {
 		this.reviewComment = reviewComment;
 	}
 

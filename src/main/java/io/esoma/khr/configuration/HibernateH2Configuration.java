@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,6 +24,7 @@ import io.esoma.khr.utility.DatabaseUtility;
  * @author Eddy Soma
  *
  */
+@Lazy
 @Configuration
 @EnableTransactionManagement
 public class HibernateH2Configuration {
@@ -85,7 +87,7 @@ public class HibernateH2Configuration {
 		h2HibernateProperties.setProperty("hibernate.connection.pool_size", "1");
 		h2HibernateProperties.setProperty("hibernate.current_session_context_class", "thread");
 		h2HibernateProperties.setProperty("hibernate.connection.autocommit", "false");
-		h2HibernateProperties.setProperty("hibernate.hbm2ddl.auto", "validate");
+		h2HibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create");
 
 		return h2HibernateProperties;
 
