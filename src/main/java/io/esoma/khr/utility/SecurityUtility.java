@@ -2,8 +2,16 @@ package io.esoma.khr.utility;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+
+import javax.crypto.SecretKey;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 
 /**
  * 
@@ -90,6 +98,67 @@ public class SecurityUtility {
 	public static boolean isValidPassword(String password, String salt, String hash) {
 
 		return hash.equals(getSHA256Digest(password.concat(salt)));
+
+	}
+
+	/**
+	 * 
+	 * Returns a cryptographically signed JSON Web Token used for user
+	 * authentication. The signing key should be provided by a service method. It
+	 * contains a koalibee's ID and email in the payload.
+	 * 
+	 * @param koalibeeId the koalibee's ID (primary key in the database)
+	 * @param email      the koalibee's email address.
+	 * @param key        the secret key used for signing.
+	 * @return the signed JWT.
+	 */
+	public static String buildAuthJws(int koalibeeId, String email, SecretKey key) {
+
+		return Jwts.builder().claim("koalibeeId", koalibeeId).claim("email", email).signWith(key).compact();
+
+	}
+
+	/**
+	 * 
+	 * Returns the ID and email claims in a JWS grouped into an Object array. The
+	 * claim values are the appropriate Integer and String types at runtime.
+	 * 
+	 * @param jws the JWS to be parsed.
+	 * @param key the secret key used to validate the signature.
+	 * @return the array containing the claims.
+	 * @throws JwtException if the JWS cannot be validated.
+	 */
+	public static Object[] parseAuthJws(String jws, SecretKey key) throws JwtException {
+
+		Object[] claims = new Object[2];
+
+		Jws<Claims> parsedJws = Jwts.parser().setSigningKey(key).parseClaimsJws(jws);
+
+		// The ID claim.
+		claims[0] = parsedJws.getBody().get("koalibeeId", Integer.class);
+		// The email claim.
+		claims[1] = parsedJws.getBody().get("email", String.class);
+
+		return claims;
+
+	}
+
+	/**
+	 * 
+	 * Checks if the auth JWS has expired based on the time it was last used. This
+	 * is effectively the implementation of setting the maximum age of a user
+	 * session. By default, a session will expire if the user is idle for more than
+	 * 15 minutes.
+	 * 
+	 * @param lastAccessed the time that the server last received the JWS sent from
+	 *                     the client.
+	 * @return true if the JWS has not expired, or false otherwise.
+	 */
+	public static boolean jwsHasNotExpired(LocalDateTime lastAccessed) {
+
+		LocalDateTime expiration = lastAccessed.plusMinutes(15);
+
+		return LocalDateTime.now().compareTo(expiration) < 0;
 
 	}
 

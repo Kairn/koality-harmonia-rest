@@ -44,11 +44,15 @@ public class HibernateOracleConfigurationTest {
 	public void testOracleDBSessionFactory() throws Exception {
 
 		assertNotNull(oracleDBSessionFactory.openSession());
+
 		assertTrue(oracleDBSessionFactory.isOpen());
+
 		assertNotNull(oracleDBSessionFactory.getCurrentSession().beginTransaction());
+
 		oracleDBSessionFactory.getCurrentSession().getTransaction().commit();
 		oracleDBSessionFactory.getCurrentSession().close();
 		oracleDBSessionFactory.close();
+
 		assertTrue(oracleDBSessionFactory.isClosed());
 
 	}

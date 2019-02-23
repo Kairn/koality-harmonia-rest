@@ -44,11 +44,15 @@ public class HibernateH2ConfigurationTest {
 	public void testH2DBSessionFactory() throws Exception {
 
 		assertNotNull(h2DBSessionFactory.openSession());
+
 		assertTrue(h2DBSessionFactory.isOpen());
+
 		assertNotNull(h2DBSessionFactory.getCurrentSession().beginTransaction());
+
 		h2DBSessionFactory.getCurrentSession().getTransaction().commit();
 		h2DBSessionFactory.getCurrentSession().close();
 		h2DBSessionFactory.close();
+
 		assertTrue(h2DBSessionFactory.isClosed());
 
 	}
