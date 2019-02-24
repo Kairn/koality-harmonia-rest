@@ -3,6 +3,7 @@ package io.esoma.khr.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -119,7 +120,8 @@ public class Koalibee implements Serializable {
 		this.avatarType = avatarType;
 	}
 
-	@OneToOne(mappedBy = "koalibee")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CREDENTIALS_ID")
 	public Credentials getCredentials() {
 		return credentials;
 	}

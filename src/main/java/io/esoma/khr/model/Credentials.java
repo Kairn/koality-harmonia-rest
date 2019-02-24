@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,8 +27,6 @@ public class Credentials implements Serializable {
 	private String email;
 	private String passwordHash;
 	private String passwordSalt;
-
-	private Koalibee koalibee;
 
 	public Credentials() {
 		super();
@@ -78,16 +74,6 @@ public class Credentials implements Serializable {
 
 	public void setPasswordSalt(String passwordSalt) {
 		this.passwordSalt = passwordSalt;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "KOALIBEE_ID")
-	public Koalibee getKoalibee() {
-		return koalibee;
-	}
-
-	public void setKoalibee(Koalibee koalibee) {
-		this.koalibee = koalibee;
 	}
 
 	@Override
