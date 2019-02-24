@@ -1,9 +1,12 @@
 package io.esoma.khr.configuration;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,17 +46,27 @@ public class HibernateOracleConfigurationTest {
 	@Test
 	public void testOracleDBSessionFactory() throws Exception {
 
-		assertNotNull(oracleDBSessionFactory.openSession());
-
 		assertTrue(oracleDBSessionFactory.isOpen());
 
-		assertNotNull(oracleDBSessionFactory.getCurrentSession().beginTransaction());
+		Session session = oracleDBSessionFactory.openSession();
 
-		oracleDBSessionFactory.getCurrentSession().getTransaction().commit();
-		oracleDBSessionFactory.getCurrentSession().close();
-		oracleDBSessionFactory.close();
+		assertNotNull(session);
 
-		assertTrue(oracleDBSessionFactory.isClosed());
+		assertTrue(session.isOpen());
+
+		Transaction tx = session.beginTransaction();
+
+		assertNotNull(tx);
+
+		assertTrue(tx.isActive());
+
+		tx.commit();
+
+		assertFalse(tx.isActive());
+
+		session.close();
+
+		assertFalse(session.isOpen());
 
 	}
 
