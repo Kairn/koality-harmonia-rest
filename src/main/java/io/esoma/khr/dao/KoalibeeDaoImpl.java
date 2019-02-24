@@ -49,11 +49,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
-			koalibee = null;
 		}
 
 		return koalibee;
@@ -75,10 +70,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			koalibee = null;
 		}
 
@@ -99,10 +90,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			id = 0;
 		}
 
@@ -136,10 +123,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			success = false;
 		}
 
@@ -171,10 +154,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			success = false;
 		}
 
@@ -197,10 +176,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			success = false;
 		}
 
@@ -223,10 +198,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			success = false;
 		}
 
@@ -249,10 +220,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			emailList.clear();
 		}
 
@@ -275,10 +242,6 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
-
-			if (tx != null) {
-				tx.rollback();
-			}
 			koalibeeList.clear();
 		}
 

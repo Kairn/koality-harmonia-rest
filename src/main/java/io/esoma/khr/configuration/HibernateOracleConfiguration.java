@@ -67,6 +67,9 @@ public class HibernateOracleConfiguration {
 		oracleDataSource.setUrl(DatabaseUtility.getOracleDBUrl());
 		oracleDataSource.setUsername(DatabaseUtility.getOracleDBUsername());
 		oracleDataSource.setPassword(DatabaseUtility.getOracleDBPassword());
+		// Rollback on return.
+		oracleDataSource.setAutoCommitOnReturn(false);
+		oracleDataSource.setRollbackOnReturn(true);
 
 		return oracleDataSource;
 
