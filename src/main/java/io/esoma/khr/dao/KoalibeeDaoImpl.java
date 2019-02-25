@@ -49,6 +49,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		} catch (Exception e) {
 			// Debug message
 			System.out.println(e);
+			koalibee = null;
 		}
 
 		return koalibee;
