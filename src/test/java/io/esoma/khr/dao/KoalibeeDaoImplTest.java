@@ -113,6 +113,17 @@ public class KoalibeeDaoImplTest {
 	}
 
 	@Test
+	public void testGetKoalibeeByIdA() throws Exception {
+
+		Koalibee koalibee = this.koalibeeDao.getKoalibeeById(2);
+
+		assertNotNull(koalibee);
+
+		assertEquals("data:image/jpg;base64,cmFuZG9tYnl0ZXM=", koalibee.getAvatarDataUrl());
+
+	}
+
+	@Test
 	public void testGetKoalibeeByIdN() throws Exception {
 
 		Koalibee koalibee = this.koalibeeDao.getKoalibeeById(15);
@@ -150,7 +161,20 @@ public class KoalibeeDaoImplTest {
 
 		assertNotNull(koalibee);
 
+		assertNull(koalibee.getAvatarDataUrl());
+
 		assertEquals(50, koalibee.getEtaBalance());
+
+	}
+
+	@Test
+	public void testGetKoalibeeByEmailA() throws Exception {
+
+		Koalibee koalibee = this.koalibeeDao.getKoalibeeByEmail("revature@java.com");
+
+		assertNotNull(koalibee);
+
+		assertEquals("data:image/png;base64,bXlzYW1wbGVBVkFUQVI=", koalibee.getAvatarDataUrl());
 
 	}
 
@@ -176,6 +200,8 @@ public class KoalibeeDaoImplTest {
 		koalibee.setLastName("Kairn");
 		koalibee.setEmail("revature@java.com");
 		koalibee.setEtaBalance(0);
+		koalibee.setAvatar("mysampleAVATAR".getBytes());
+		koalibee.setAvatarType("PNG");
 		koalibee.setCredentials(credentials);
 
 		assertNotEquals(0, this.koalibeeDao.addKoalibee(koalibee));

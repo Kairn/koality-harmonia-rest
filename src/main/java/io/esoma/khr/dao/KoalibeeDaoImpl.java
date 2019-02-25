@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import io.esoma.khr.model.Koalibee;
+import io.esoma.khr.utility.DataUtility;
 
 /**
  * 
@@ -45,6 +46,11 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		try (Session session = sessionFactory.openSession()) {
 			tx = session.beginTransaction();
 			koalibee = session.get(Koalibee.class, koalibeeId);
+			// Obtain avatar data url
+			if (koalibee.getAvatar() != null && koalibee.getAvatarType() != null) {
+				koalibee.setAvatarDataUrl(
+						DataUtility.encodeBytesToDataUrlImage(koalibee.getAvatar(), koalibee.getAvatarType()));
+			}
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
@@ -67,6 +73,11 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		try (Session session = sessionFactory.openSession()) {
 			tx = session.beginTransaction();
 			koalibee = session.createQuery(hql, Koalibee.class).setParameter("email", email).getSingleResult();
+			// Obtain avatar data url
+			if (koalibee.getAvatar() != null && koalibee.getAvatarType() != null) {
+				koalibee.setAvatarDataUrl(
+						DataUtility.encodeBytesToDataUrlImage(koalibee.getAvatar(), koalibee.getAvatarType()));
+			}
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
