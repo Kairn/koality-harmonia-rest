@@ -77,4 +77,12 @@ VALUES (NEXTVAL('SEQ_MOMENT_ID'), PARSEDATETIME('2019-02-24', 'yyyy-MM-dd'), 'ma
 INSERT INTO MOMENT (MOMENT_ID, POST_DATE, POST_COMMENT, KOALIBEE_ID)
 VALUES (NEXTVAL('SEQ_MOMENT_ID'), PARSEDATETIME('2018-11-30', 'yyyy-MM-dd'), 'Angular is way better than React.', 1);
 
+-- ==================== TEST INSERT GENRE ====================
+
+-- ==================== TEST INSERT ALBUM ====================
+
+-- ==================== TEST INSERT TRACK ====================
+
+-- ==================== TEST INSERT REVIEW ====================
+
 COMMIT;
