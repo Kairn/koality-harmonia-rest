@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Moment;
@@ -20,6 +21,7 @@ import io.esoma.khr.model.Moment;
  * @author Eddy Soma
  *
  */
+@Repository(value = "momentDaoImplBasic")
 public class MomentDaoImpl implements MomentDao {
 
 	private SessionFactory sessionFactory;
@@ -64,7 +66,7 @@ public class MomentDaoImpl implements MomentDao {
 		Transaction tx = null;
 		Moment moment = null;
 
-		final String hql = "FROM Moment AS m WHERE m.koalibeeId = :koalibeeId AND m.postDate = :postDate";
+		final String hql = "FROM Moment AS m WHERE m.koalibee.koalibeeId = :koalibeeId AND m.postDate = :postDate";
 
 		try (Session session = sessionFactory.openSession()) {
 			tx = session.beginTransaction();

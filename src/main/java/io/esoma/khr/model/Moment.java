@@ -39,6 +39,11 @@ public class Moment implements Serializable {
 		super();
 	}
 
+	public Moment(int momentId) {
+		super();
+		this.momentId = momentId;
+	}
+
 	public Moment(int momentId, LocalDate postDate) {
 		super();
 		this.momentId = momentId;
