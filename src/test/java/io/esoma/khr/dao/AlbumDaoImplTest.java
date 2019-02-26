@@ -296,11 +296,11 @@ public class AlbumDaoImplTest {
 	@Test
 	public void testGetAllPublishedAlbums() throws Exception {
 
-		assertTrue(this.albumDao.getAllPublishedAlbums().isEmpty());
+		assertEquals(1, this.albumDao.getAllPublishedAlbums().size());
 
 		assertTrue(this.albumDao.publishAlbum(new Album(2)));
 
-		assertEquals("New Album", this.albumDao.getAllPublishedAlbums().get(0).getAlbumName());
+		assertEquals("New Album", this.albumDao.getAllPublishedAlbums().get(1).getAlbumName());
 
 	}
 

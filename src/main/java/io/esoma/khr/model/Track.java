@@ -137,7 +137,6 @@ public class Track implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + trackId;
-		result = prime * result + ((trackName == null) ? 0 : trackName.hashCode());
 		return result;
 	}
 
@@ -154,13 +153,6 @@ public class Track implements Serializable {
 		}
 		Track other = (Track) obj;
 		if (trackId != other.trackId) {
-			return false;
-		}
-		if (trackName == null) {
-			if (other.trackName != null) {
-				return false;
-			}
-		} else if (!trackName.equals(other.trackName)) {
 			return false;
 		}
 		return true;
