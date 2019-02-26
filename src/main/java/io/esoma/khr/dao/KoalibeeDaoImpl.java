@@ -46,7 +46,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		try (Session session = sessionFactory.openSession()) {
 			tx = session.beginTransaction();
 			koalibee = session.get(Koalibee.class, koalibeeId);
-			// Obtain avatar data url
+			// Obtain avatar data url.
 			if (koalibee.getAvatar() != null && koalibee.getAvatarType() != null) {
 				koalibee.setAvatarDataUrl(
 						DataUtility.encodeBytesToDataUrlImage(koalibee.getAvatar(), koalibee.getAvatarType()));

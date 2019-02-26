@@ -30,6 +30,11 @@ public class Genre implements Serializable {
 		super();
 	}
 
+	public Genre(int genreId) {
+		super();
+		this.genreId = genreId;
+	}
+
 	public Genre(int genreId, String genreName) {
 		super();
 		this.genreId = genreId;

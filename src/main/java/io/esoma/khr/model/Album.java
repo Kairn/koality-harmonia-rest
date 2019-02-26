@@ -182,7 +182,6 @@ public class Album implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + albumId;
-		result = prime * result + ((albumName == null) ? 0 : albumName.hashCode());
 		return result;
 	}
 
@@ -199,13 +198,6 @@ public class Album implements Serializable {
 		}
 		Album other = (Album) obj;
 		if (albumId != other.albumId) {
-			return false;
-		}
-		if (albumName == null) {
-			if (other.albumName != null) {
-				return false;
-			}
-		} else if (!albumName.equals(other.albumName)) {
 			return false;
 		}
 		return true;
