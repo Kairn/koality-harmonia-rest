@@ -299,6 +299,28 @@ public class KoalibeeDaoImplTest {
 	}
 
 	@Test
+	public void testPurchaseAlbum1() throws Exception {
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(3, 1));
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(3, 3));
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(3, 6));
+
+	}
+
+	@Test
+	public void testPurchaseAlbum2() throws Exception {
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(2, 2));
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(2, 4));
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(1, 5));
+
+	}
+
+	@Test
 	public void testDeleteKoalibee() throws Exception {
 
 		assertTrue(this.koalibeeDao.deleteKoalibee(5));
@@ -330,6 +352,24 @@ public class KoalibeeDaoImplTest {
 		assertTrue(koalibeeList.contains(new Koalibee(2)));
 
 		assertTrue(koalibeeList.contains(new Koalibee(3)));
+
+	}
+
+	@Test
+	public void testGetAllPurchasedAlbumsByKoalibeeId() throws Exception {
+
+		assertTrue(this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(3).isEmpty());
+
+	}
+
+	@Test
+	public void testGetAllPurchasedAlbumsByKoalibeeIdH() throws Exception {
+
+		assertTrue(this.koalibeeDao.purchaseAlbum(3, 2));
+
+		assertFalse(this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(3).isEmpty());
+
+		assertEquals("JPG", this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(3).get(0).getArtworkType());
 
 	}
 

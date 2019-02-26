@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.utility.DataUtility;
 
@@ -196,6 +197,29 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 	}
 
 	@Override
+	public boolean purchaseAlbum(int koalibeeId, int albumId) {
+
+		Transaction tx = null;
+		boolean success = false;
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			Koalibee koalibee = session.get(Koalibee.class, koalibeeId);
+			Album album = session.load(Album.class, albumId);
+			koalibee.getAlbumList().add(album);
+			tx.commit();
+			success = true;
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			success = false;
+		}
+
+		return success;
+
+	}
+
+	@Override
 	public boolean deleteKoalibee(int koalibeeId) {
 
 		Transaction tx = null;
@@ -258,6 +282,32 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 		}
 
 		return koalibeeList;
+
+	}
+
+	@Override
+	public List<Album> getAllPurchasedAlbumsByKoalibeeId(int koalibeeId) {
+
+		Transaction tx = null;
+		List<Album> albumList = new ArrayList<>();
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			Koalibee koalibee = session.get(Koalibee.class, koalibeeId);
+			for (Album a : koalibee.getAlbumList()) {
+				if (a.getArtwork() != null && a.getArtworkType() != null) {
+					a.setArtworkDataUrl(DataUtility.encodeBytesToDataUrlImage(a.getArtwork(), a.getArtworkType()));
+				}
+				albumList.add(a);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			albumList.clear();
+		}
+
+		return albumList;
 
 	}
 

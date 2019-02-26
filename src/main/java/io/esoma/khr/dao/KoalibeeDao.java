@@ -2,6 +2,7 @@ package io.esoma.khr.dao;
 
 import java.util.List;
 
+import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Koalibee;
 
 /**
@@ -76,6 +77,16 @@ public interface KoalibeeDao {
 
 	/**
 	 * 
+	 * Adds a published album into a user's inventory.
+	 * 
+	 * @param koalibeeId the ID of the purchaser.
+	 * @param albumId    the ID of the album being purchased.
+	 * @return true if purchase is successful, or false otherwise.
+	 */
+	boolean purchaseAlbum(int koalibeeId, int albumId);
+
+	/**
+	 * 
 	 * Deletes a koalibee record from the database. This method can only be accessed
 	 * by a system administrator. Authorization is handled by the business logic.
 	 * 
@@ -102,5 +113,14 @@ public interface KoalibeeDao {
 	 * @return the koalibee list.
 	 */
 	List<Koalibee> getAllKoalibees();
+
+	/**
+	 * 
+	 * Gets a list of all purchased albums of a user.
+	 * 
+	 * @param koalibeeId the ID of the koalibee.
+	 * @return the album list.
+	 */
+	List<Album> getAllPurchasedAlbumsByKoalibeeId(int koalibeeId);
 
 }
