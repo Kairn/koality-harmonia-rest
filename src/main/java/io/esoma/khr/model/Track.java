@@ -113,7 +113,7 @@ public class Track implements Serializable {
 		this.isDemo = isDemo;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ALBUM_ID")
 	public Album getAlbum() {
 		return album;
