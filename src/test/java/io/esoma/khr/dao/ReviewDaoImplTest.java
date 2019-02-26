@@ -1,8 +1,13 @@
 package io.esoma.khr.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.junit.AfterClass;
@@ -19,6 +24,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import io.esoma.khr.model.Album;
+import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Review;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -120,33 +127,156 @@ public class ReviewDaoImplTest {
 	}
 
 	@Test
-	public void testGetReviewByKoalibeeAndAlbum() throws Exception {
-		throw new RuntimeException("not yet implemented");
+	public void testGetReviewByAlbumAndKoalibee1() throws Exception {
+
+		Review review = this.reviewDao.getReviewByAlbumAndKoalibee(6, 1);
+
+		assertNotNull(review);
+
+		assertEquals(1, review.getRating());
+
 	}
 
 	@Test
-	public void testAddReview() throws Exception {
-		throw new RuntimeException("not yet implemented");
+	public void testGetReviewByAlbumAndKoalibee2() throws Exception {
+
+		Review review = this.reviewDao.getReviewByAlbumAndKoalibee(1, 3);
+
+		assertEquals(10, review.getRating());
+
+		assertEquals("WTFOMG Psyche", review.getReviewComment());
+
+		assertNull(review.getAlbumName());
+
+		assertNull(review.getKoalibeeName());
+
+	}
+
+	@Test
+	public void testGetReviewByAlbumAndKoalibeeN() throws Exception {
+
+		Review review = this.reviewDao.getReviewByAlbumAndKoalibee(6, 3);
+
+		assertNull(review);
+
+	}
+
+	@Test
+	public void testAddReview1() throws Exception {
+
+		final Album album = new Album(4);
+
+		final Koalibee koalibee = new Koalibee(3);
+
+		final Review review = new Review();
+		review.setRating(5);
+		review.setReviewComment("Test comment");
+		review.setAlbum(album);
+		review.setKoalibee(koalibee);
+
+		int id = this.reviewDao.addReview(review);
+
+		assertEquals(11, id);
+
+		assertEquals("Test comment", this.reviewDao.getReviewById(id).getReviewComment());
+
+	}
+
+	@Test
+	public void testAddReview2() throws Exception {
+
+		final Album album = new Album(2);
+
+		final Koalibee koalibee = new Koalibee(2);
+
+		final Review review = new Review();
+		review.setRating(9);
+		review.setReviewComment("two to 222");
+		review.setAlbum(album);
+		review.setKoalibee(koalibee);
+
+		int id = this.reviewDao.addReview(review);
+
+		assertNotEquals(0, id);
+
+		assertEquals(9, this.reviewDao.getReviewById(id).getRating());
+
+		assertEquals("Julie Seals", this.reviewDao.getReviewById(id).getKoalibeeName());
+
 	}
 
 	@Test
 	public void testDeleteReview() throws Exception {
-		throw new RuntimeException("not yet implemented");
+
+		assertNotNull(this.reviewDao.getReviewById(12));
+
+		assertTrue(this.reviewDao.deleteReview(12));
+
+		assertNull(this.reviewDao.getReviewById(12));
+
 	}
 
 	@Test
 	public void testGetAllReviews() throws Exception {
-		throw new RuntimeException("not yet implemented");
+
+		List<Review> reviewList = this.reviewDao.getAllReviews();
+
+		assertFalse(reviewList.isEmpty());
+
+		assertTrue(reviewList.contains(new Review(10)));
+
+		assertTrue(reviewList.contains(new Review(9)));
+
+		assertTrue(reviewList.contains(new Review(8)));
+
+		assertTrue(reviewList.contains(new Review(7)));
+
 	}
 
 	@Test
 	public void testGetAllReviewsByAlbum() throws Exception {
-		throw new RuntimeException("not yet implemented");
+
+		List<Review> reviewList = this.reviewDao.getAllReviewsByAlbum(1);
+
+		assertEquals(2, reviewList.size());
+
+		assertEquals("John Smith", reviewList.get(0).getKoalibeeName());
+
+	}
+
+	@Test
+	public void testGetAllReviewsByAlbumN() throws Exception {
+
+		List<Review> reviewList = this.reviewDao.getAllReviewsByAlbum(3);
+
+		assertEquals(0, reviewList.size());
+
 	}
 
 	@Test
 	public void testGetAllReviewsByKoalibee() throws Exception {
-		throw new RuntimeException("not yet implemented");
+
+		List<Review> reviewList = this.reviewDao.getAllReviewsByKoalibee(1);
+
+		assertEquals(4, reviewList.size());
+
+		assertTrue(reviewList.contains(new Review(1)));
+
+		reviewList.removeIf(r -> !r.getAlbum().equals(new Album(1)));
+
+		assertEquals("Just amazing!", reviewList.get(0).getReviewComment());
+
+		assertEquals("Etudes Liszt", reviewList.get(0).getAlbumName());
+
+	}
+
+	@Test
+	public void testGetAllReviewsByKoalibeeN() throws Exception {
+
+		List<Review> reviewList = this.reviewDao.getAllReviewsByKoalibee(7);
+
+		assertEquals(0, reviewList.size());
+
 	}
 
 }

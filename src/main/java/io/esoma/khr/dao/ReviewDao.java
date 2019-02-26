@@ -31,7 +31,7 @@ public interface ReviewDao {
 	 * @param albumId    the ID of the album.
 	 * @return the review object, or null if no matching record if found.
 	 */
-	Review getReviewByKoalibeeAndAlbum(int koalibeeId, int albumId);
+	Review getReviewByAlbumAndKoalibee(int albumId, int koalibeeId);
 
 	/**
 	 * 

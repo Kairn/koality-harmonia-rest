@@ -1,5 +1,6 @@
 package io.esoma.khr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -59,39 +60,145 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public Review getReviewByKoalibeeAndAlbum(int koalibeeId, int albumId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Review getReviewByAlbumAndKoalibee(int albumId, int koalibeeId) {
+
+		Transaction tx = null;
+		Review review = null;
+
+		final String hql = "FROM Review AS r WHERE r.album.albumId = :albumId AND r.koalibee.koalibeeId = :koalibeeId";
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			review = session.createQuery(hql, Review.class).setParameter("albumId", albumId)
+					.setParameter("koalibeeId", koalibeeId).getSingleResult();
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			review = null;
+		}
+
+		return review;
+
 	}
 
 	@Override
 	public int addReview(Review review) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		Transaction tx = null;
+		int id = 0;
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			id = (int) session.save(review);
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			id = 0;
+		}
+
+		return id;
+
 	}
 
 	@Override
 	public boolean deleteReview(int reviewId) {
-		// TODO Auto-generated method stub
-		return false;
+
+		Transaction tx = null;
+		boolean success = false;
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			Review review = session.load(Review.class, reviewId);
+			session.delete(review);
+			tx.commit();
+			success = true;
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			success = false;
+		}
+
+		return success;
+
 	}
 
 	@Override
 	public List<Review> getAllReviews() {
-		// TODO Auto-generated method stub
-		return null;
+
+		Transaction tx = null;
+		List<Review> reviewList = new ArrayList<>();
+
+		final String hql = "FROM Review";
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			for (Review r : session.createQuery(hql, Review.class).getResultList()) {
+				r.setAlbumName(r.getAlbum().getAlbumName());
+				r.setKoalibeeName(r.getKoalibee().getFirstName() + " " + r.getKoalibee().getLastName());
+				reviewList.add(r);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			reviewList.clear();
+		}
+
+		return reviewList;
+
 	}
 
 	@Override
 	public List<Review> getAllReviewsByAlbum(int albumId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Transaction tx = null;
+		List<Review> reviewList = new ArrayList<>();
+
+		final String hql = "FROM Review AS r WHERE r.album.albumId = :albumId";
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			for (Review r : session.createQuery(hql, Review.class).setParameter("albumId", albumId).getResultList()) {
+				r.setKoalibeeName(r.getKoalibee().getFirstName() + " " + r.getKoalibee().getLastName());
+				reviewList.add(r);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			reviewList.clear();
+		}
+
+		return reviewList;
+
 	}
 
 	@Override
 	public List<Review> getAllReviewsByKoalibee(int koalibeeId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Transaction tx = null;
+		List<Review> reviewList = new ArrayList<>();
+
+		final String hql = "FROM Review AS r WHERE r.koalibee.koalibeeId = :koalibeeId";
+
+		try (Session session = sessionFactory.openSession()) {
+			tx = session.beginTransaction();
+			for (Review r : session.createQuery(hql, Review.class).setParameter("koalibeeId", koalibeeId)
+					.getResultList()) {
+				r.setAlbumName(r.getAlbum().getAlbumName());
+				reviewList.add(r);
+			}
+			tx.commit();
+		} catch (Exception e) {
+			// Debug message
+			System.out.println(e);
+			reviewList.clear();
+		}
+
+		return reviewList;
+
 	}
 
 }
