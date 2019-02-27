@@ -29,7 +29,7 @@ import io.esoma.khr.utility.DatabaseUtility;
 @EnableTransactionManagement
 public class HibernateOracleConfiguration {
 
-	private static final String modelPackage = "io.esoma.khr.model";
+	private static final String MODEL_PACKAGE = "io.esoma.khr.model";
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class HibernateOracleConfiguration {
 		LocalSessionFactoryBean oracleSessionFactory = new LocalSessionFactoryBean();
 
 		oracleSessionFactory.setDataSource(getOracleDBDataSource());
-		oracleSessionFactory.setPackagesToScan(modelPackage);
+		oracleSessionFactory.setPackagesToScan(MODEL_PACKAGE);
 		oracleSessionFactory.setHibernateProperties(getOracleDBHibernateProperties());
 
 		return oracleSessionFactory;

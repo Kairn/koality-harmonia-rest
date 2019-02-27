@@ -29,7 +29,7 @@ import io.esoma.khr.utility.DatabaseUtility;
 @EnableTransactionManagement
 public class HibernateH2Configuration {
 
-	private static final String modelPackage = "io.esoma.khr.model";
+	private static final String MODEL_PACKAGE = "io.esoma.khr.model";
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class HibernateH2Configuration {
 		LocalSessionFactoryBean h2SessionFactory = new LocalSessionFactoryBean();
 
 		h2SessionFactory.setDataSource(getH2DBDataSource());
-		h2SessionFactory.setPackagesToScan(modelPackage);
+		h2SessionFactory.setPackagesToScan(MODEL_PACKAGE);
 		h2SessionFactory.setHibernateProperties(getH2DBHibernateProperties());
 
 		return h2SessionFactory;
