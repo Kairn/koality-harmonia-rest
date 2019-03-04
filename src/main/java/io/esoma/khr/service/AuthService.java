@@ -1,11 +1,13 @@
 package io.esoma.khr.service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Service;
 
+import io.esoma.khr.utility.SecurityUtility;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
@@ -54,16 +56,44 @@ public class AuthService {
 
 	/**
 	 * 
-	 * Generates a JSON web token for a newly registered user or an existing user
-	 * when logging in. It will always update the time of last access. It should
-	 * only be used when a user's information is first validated.
+	 * Authenticates a user's credentials data by validating the password. It can
+	 * authenticate both regular users and system administrator. It will update the
+	 * time of last access if the credentials are valid.
 	 * 
-	 * @param koalibeeId the ID of the koalibee.
-	 * @param email      the email of the koalibee.
-	 * @return the JWS representing the koalibee.
+	 * @param authData the credentials map prepared by koalibee service.
+	 * @return a JSON web token representing the user if the credentials are valid,
+	 *         or a generic string with an error message.
 	 */
-	public String authenticate(int koalibeeId, String email) {
-		//
+	public String authenticate(Map<String, String> authData) {
+
+		try {
+			// Authenticate a system administrator.
+			if (authData.get("email").equals(ADMIN_NAME)) {
+				if (SecurityUtility.isValidPassword(authData.get("password"), ADMIN_SALT, ADMIN_HASH)) {
+					this.lastAccessed = LocalDateTime.now();
+					return SecurityUtility.buildAuthJws(-777, "", this.key);
+				} else {
+					return "unauthorized admin";
+				}
+			}
+
+			// Authenticate a koalibee.
+			if (authData.get("email").contains("@")) {
+				if (SecurityUtility.isValidPassword(authData.get("password"), authData.get("passwordSalt"),
+						authData.get("passwordHash"))) {
+					this.lastAccessed = LocalDateTime.now();
+					return SecurityUtility.buildAuthJws(Integer.parseInt(authData.get("koalibeeId")),
+							authData.get("email"), this.key);
+				} else {
+					return "unauthorized koalibee";
+				}
+			} else {
+				return "bad request";
+			}
+		} catch (Exception e) {
+			return "unknown error";
+		}
+
 	}
 
 	/**
@@ -78,7 +108,23 @@ public class AuthService {
 	 *         users.
 	 */
 	public int reauthenticate(String jws) {
-		//
+
+		// Check session expiration.
+		if (!SecurityUtility.jwsHasNotExpired(this.lastAccessed)) {
+			this.resetKey();
+			return 0;
+		}
+
+		Integer id;
+
+		try {
+			id = (Integer) SecurityUtility.parseAuthJws(jws, this.key)[0];
+			this.lastAccessed = LocalDateTime.now();
+			return id;
+		} catch (Exception e) {
+			return 0;
+		}
+
 	}
 
 }
