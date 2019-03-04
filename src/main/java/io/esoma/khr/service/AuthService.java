@@ -55,6 +55,15 @@ public class AuthService {
 	}
 
 	/**
+	 * Forces all tokens to expire.
+	 */
+	public void setToExpire() {
+
+		this.lastAccessed = LocalDateTime.now().minusHours(24);
+
+	}
+
+	/**
 	 * 
 	 * Authenticates a user's credentials data by validating the password. It can
 	 * authenticate both regular users and system administrator. It will update the
@@ -110,8 +119,12 @@ public class AuthService {
 	public int reauthenticate(String jws) {
 
 		// Check session expiration.
-		if (!SecurityUtility.jwsHasNotExpired(this.lastAccessed)) {
-			this.resetKey();
+		try {
+			if (!SecurityUtility.jwsHasNotExpired(this.lastAccessed)) {
+				this.resetKey();
+				return -1;
+			}
+		} catch (Exception e) {
 			return 0;
 		}
 

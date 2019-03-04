@@ -76,6 +76,7 @@ public class ReviewDaoImplTest {
 	@Sql(scripts = "/kh-h2.sql", config = @SqlConfig(transactionManager = "h2DBHibernateTransactionManager"))
 	public void executeSql() {
 		// Intentionally left blank.
+		assertTrue(true);
 	}
 
 	@Test
@@ -89,6 +90,7 @@ public class ReviewDaoImplTest {
 	public void testSetSessionFactory() throws Exception {
 		// Intentionally left blank.
 		// This test automatically passes if autowiring succeeds.
+		assertTrue(true);
 	}
 
 	@Test
