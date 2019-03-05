@@ -20,7 +20,7 @@ public class AuthServiceTest {
 	private AuthService authService;
 
 	{
-		authService = new AuthService();
+		this.authService = new AuthService();
 	}
 
 	@BeforeClass

@@ -29,6 +29,7 @@ public class KoalibeeService {
 
 	private KoalibeeDao koalibeeDao;
 	private AlbumDao albumDao;
+
 	private AuthService authService;
 
 	@Autowired
