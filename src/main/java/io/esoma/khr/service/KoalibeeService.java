@@ -374,8 +374,12 @@ public class KoalibeeService {
 			return false;
 		} else {
 			koalibee.setEtaBalance(koalibee.getEtaBalance() - album.getEtaPrice());
+			// Credit the publisher.
+			Koalibee publisher = album.getKoalibee();
+			publisher.setEtaBalance(publisher.getEtaBalance() + album.getEtaPrice());
 			if (this.koalibeeDao.updateEtaBalance(koalibee)) {
 				if (this.koalibeeDao.purchaseAlbum(koalibeeId, albumId)) {
+					this.koalibeeDao.updateEtaBalance(publisher);
 					return true;
 				} else {
 					koalibee.setEtaBalance(koalibee.getEtaBalance() + album.getEtaPrice());

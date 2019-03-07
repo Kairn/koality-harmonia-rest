@@ -84,6 +84,7 @@ public class MomentServiceTest {
 	@Before
 	public void setUp() throws Exception {
 
+		when(this.koalibeeDao.getKoalibeeById(anyInt())).thenReturn(null);
 		when(this.koalibeeDao.getKoalibeeById(7)).thenReturn(koalibee);
 		when(this.momentDao.getAllMoments()).thenReturn(momentList);
 		when(this.momentDao.getAllMomentsByDate(LocalDate.parse("2015-09-17"))).thenReturn(new ArrayList<Moment>());
@@ -227,16 +228,7 @@ public class MomentServiceTest {
 
 		final String source = "bad JSON";
 
-		assertEquals(0, this.momentService.postOne(source));
-
-	}
-
-	@Test
-	public void testPostOneBadID() throws Exception {
-
-		final String source = "{\"random\":77}";
-
-		assertEquals(0, this.momentService.postOne(source));
+		assertEquals(0, this.momentService.postOne(1, source));
 
 	}
 
@@ -245,7 +237,7 @@ public class MomentServiceTest {
 
 		final String source = "{\"koalibeeId\":2,\"postDate\":\"2016-12-31\"}";
 
-		assertEquals(0, this.momentService.postOne(source));
+		assertEquals(0, this.momentService.postOne(2, source));
 
 	}
 
@@ -254,7 +246,7 @@ public class MomentServiceTest {
 
 		final String source = "{\"koalibeeId\":7,\"Comment\":\"haha\"}";
 
-		assertEquals(0, this.momentService.postOne(source));
+		assertEquals(0, this.momentService.postOne(7, source));
 
 	}
 
@@ -266,7 +258,7 @@ public class MomentServiceTest {
 
 		final String source = "{\"koalibeeId\":7,\"postComment\":\"haha\"}";
 
-		assertEquals(0, this.momentService.postOne(source));
+		assertEquals(0, this.momentService.postOne(7, source));
 
 	}
 
@@ -278,7 +270,7 @@ public class MomentServiceTest {
 
 		final String source = "{\"koalibeeId\":7,\"postComment\":\"other comments\"}";
 
-		assertEquals(0, this.momentService.postOne(source));
+		assertEquals(0, this.momentService.postOne(7, source));
 
 	}
 
@@ -288,9 +280,9 @@ public class MomentServiceTest {
 		when(this.momentDao.addMoment(isA(Moment.class))).thenReturn(77);
 		this.momentService.setMomentDao(momentDao);
 
-		final String source = "{\"koalibeeId\":7,\"postComment\":\"good message\"}";
+		final String source = "{\"postComment\":\"good message\"}";
 
-		assertEquals(77, this.momentService.postOne(source));
+		assertEquals(77, this.momentService.postOne(7, source));
 
 	}
 

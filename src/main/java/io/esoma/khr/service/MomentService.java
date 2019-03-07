@@ -110,12 +110,13 @@ public class MomentService {
 	/**
 	 * 
 	 * Attempts to post a new moment by a koalibee with the given data encoded in a
-	 * JSON string.
+	 * JSON string. The koalibee should have been authenticated first.
 	 * 
-	 * @param moment the JSON string sent from the request.
+	 * @param koalibeeId the ID of the poster.
+	 * @param moment     the JSON string sent from the request.
 	 * @return a positive integer if the posting succeeds, or 0 if it fails.
 	 */
-	public int postOne(String momentData) {
+	public int postOne(int koalibeeId, String momentData) {
 
 		JSONObject jo;
 
@@ -131,20 +132,14 @@ public class MomentService {
 
 		Koalibee persistKoalibee;
 
-		// Extract moment data.
-		try {
-			int koalibeeId = jo.getInt("koalibeeId");
-
-			// Validate ID.
-			persistKoalibee = this.koalibeeDao.getKoalibeeById(koalibeeId);
-			if (persistKoalibee == null) {
-				return 0;
-			}
-			koalibee.setKoalibeeId(koalibeeId);
-		} catch (Exception e) {
+		// Validate ID.
+		persistKoalibee = this.koalibeeDao.getKoalibeeById(koalibeeId);
+		if (persistKoalibee == null) {
 			return 0;
 		}
+		koalibee.setKoalibeeId(koalibeeId);
 
+		// Extract moment data.
 		try {
 			String postComment = jo.getString("postComment");
 			moment.setPostComment(postComment);

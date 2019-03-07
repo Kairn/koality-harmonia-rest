@@ -102,6 +102,17 @@ public class AlbumDaoImplTest {
 	}
 
 	@Test
+	public void testGetAlbumById1K() throws Exception {
+
+		Album album = this.albumDao.getAlbumById(1);
+
+		assertEquals(3, album.getKoalibee().getKoalibeeId());
+
+		assertEquals("Soma", album.getKoalibee().getLastName());
+
+	}
+
+	@Test
 	public void testGetAlbumById2() throws Exception {
 
 		Album album = this.albumDao.getAlbumById(5);
