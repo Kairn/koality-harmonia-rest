@@ -410,11 +410,12 @@ public class KoalibeeServiceTest {
 	@Test
 	public void testPurchaseAlbumS() throws Exception {
 
-		final Album album = new Album(8);
-		album.setEtaPrice(150);
-
 		final Koalibee koalibee = new Koalibee(8);
 		koalibee.setEtaBalance(400);
+
+		final Album album = new Album(8);
+		album.setEtaPrice(150);
+		album.setKoalibee(koalibee);
 
 		when(this.albumDao.getAlbumById(8)).thenReturn(album);
 		when(this.koalibeeDao.getKoalibeeById(8)).thenReturn(koalibee);
@@ -434,6 +435,29 @@ public class KoalibeeServiceTest {
 		this.koalibeeService.setKoalibeeDao(koalibeeDao);
 
 		assertTrue(this.koalibeeService.delete(4));
+
+	}
+
+	public void testGetAll() throws Exception {
+
+		final Koalibee koalibee = new Koalibee(12);
+		koalibee.setAvatar("avatar".getBytes());
+		koalibee.setAlbumList(new ArrayList<Album>());
+		koalibee.setAvatarDataUrl("some url");
+
+		final List<Koalibee> koalibeeList = new ArrayList<>();
+		koalibeeList.add(koalibee);
+
+		when(this.koalibeeDao.getAllKoalibees()).thenReturn(koalibeeList);
+		this.koalibeeService.setKoalibeeDao(koalibeeDao);
+
+		assertEquals(1, this.koalibeeService.getAll().size());
+
+		assertNull(this.koalibeeService.getAll().get(0).getAvatar());
+
+		assertNull(this.koalibeeService.getAll().get(0).getAlbumList());
+
+		assertNull(this.koalibeeService.getAll().get(0).getAvatarDataUrl());
 
 	}
 
