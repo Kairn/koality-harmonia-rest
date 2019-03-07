@@ -120,7 +120,7 @@ public class MomentService {
 
 		JSONObject jo;
 
-		// parse the JSON string.
+		// Parse the JSON string.
 		try {
 			jo = new JSONObject(momentData);
 		} catch (Exception e) {
@@ -198,7 +198,7 @@ public class MomentService {
 
 		JSONObject jo;
 
-		// parse the JSON string.
+		// Parse the JSON string.
 		try {
 			jo = new JSONObject(dateData);
 		} catch (Exception e) {

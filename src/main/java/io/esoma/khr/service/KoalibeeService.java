@@ -271,7 +271,8 @@ public class KoalibeeService {
 		try {
 			String avatarDataUrl = jo.getString("avatarDataUrl");
 			koalibee.setAvatar(DataUtility.decodeDataUrlToBytes(avatarDataUrl));
-			koalibee.setAvatarType(avatarDataUrl.substring(avatarDataUrl.indexOf("/") + 1, avatarDataUrl.indexOf(";")));
+			koalibee.setAvatarType(
+					avatarDataUrl.substring(avatarDataUrl.indexOf("/") + 1, avatarDataUrl.indexOf(";")).toUpperCase());
 		} catch (Exception e) {
 			koalibee.setAvatar(null);
 		}
@@ -404,6 +405,30 @@ public class KoalibeeService {
 	public boolean delete(int koalibeeId) {
 
 		return this.koalibeeDao.deleteKoalibee(koalibeeId);
+
+	}
+
+	/**
+	 * 
+	 * Retrieves all registered koalibees. It can only be access by a system
+	 * administrator.
+	 * 
+	 * @return the koalibee list.
+	 */
+	public List<Koalibee> getAll() {
+
+		List<Koalibee> koalibeeList = this.koalibeeDao.getAllKoalibees();
+
+		// Truncate proxies.
+		for (Koalibee k : koalibeeList) {
+			k.setAvatar(null);
+			k.setAvatarType(null);
+			k.setAvatarDataUrl(null);
+			k.setAlbumList(null);
+			k.setCredentials(null);
+		}
+
+		return koalibeeList;
 
 	}
 
