@@ -307,7 +307,11 @@ public class AlbumService {
 		Album album = this.albumDao.getAlbumById(albumId);
 
 		// Verify ownership.
-		if (!album.getKoalibee().equals(publisher)) {
+		if (publisher != null && album != null) {
+			if (!album.getKoalibee().equals(publisher)) {
+				return false;
+			}
+		} else {
 			return false;
 		}
 
