@@ -3,6 +3,7 @@ package io.esoma.khr.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -53,6 +54,7 @@ public class TrackDaoImpl implements TrackDao {
 							DataUtility.encodeBytesToDataUrlAudio(track.getAudio(), track.getAudioType()));
 				}
 			}
+			Hibernate.initialize(track.getAlbum());
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
