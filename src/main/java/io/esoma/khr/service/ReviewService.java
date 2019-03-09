@@ -79,18 +79,18 @@ public class ReviewService {
 			return null;
 		}
 
-		int koalibeeId;
 		int albumId;
+		int koalibeeId;
 
 		// Extract search conditions.
 		try {
-			koalibeeId = jo.getInt("koalibeeId");
+			albumId = jo.getInt("albumId");
 		} catch (Exception e) {
 			return null;
 		}
 
 		try {
-			albumId = jo.getInt("albumId");
+			koalibeeId = jo.getInt("koalibeeId");
 		} catch (Exception e) {
 			return null;
 		}
