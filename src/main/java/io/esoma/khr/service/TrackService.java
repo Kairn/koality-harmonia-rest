@@ -63,7 +63,7 @@ public class TrackService {
 
 		// Check if the track is published.
 		if (track != null) {
-			if (track.getAlbum().getIsPublished() != "T") {
+			if (!track.getAlbum().getIsPublished().equals("T")) {
 				return null;
 			}
 		} else {
@@ -71,7 +71,7 @@ public class TrackService {
 		}
 
 		// Allow demo tracks to be return without authentication.
-		if (track.getIsDemo() == "T") {
+		if (track.getIsDemo().equals("T")) {
 			return track;
 		}
 
@@ -114,7 +114,7 @@ public class TrackService {
 		// Check if the album is unpublished.
 		Album album = this.albumDao.getAlbumById(albumId);
 		if (album != null) {
-			if (album.getIsPublished() != "F") {
+			if (!album.getIsPublished().equals("F")) {
 				return 0;
 			}
 		} else {
@@ -154,7 +154,7 @@ public class TrackService {
 			String audioDataUrl = jo.getString("audioDataUrl");
 			track.setAudio(DataUtility.decodeDataUrlToBytes(audioDataUrl));
 			track.setAudioType(
-					audioDataUrl.substring(audioDataUrl.indexOf("/") + 1, audioDataUrl.indexOf(";")).toUpperCase());
+					audioDataUrl.substring(audioDataUrl.indexOf('/') + 1, audioDataUrl.indexOf(';')).toUpperCase());
 		} catch (Exception e) {
 			return 0;
 		}
@@ -190,7 +190,7 @@ public class TrackService {
 			Track track = this.trackDao.getTrackById(trackId);
 			if (track != null) {
 				// Check if the album is published.
-				if (track.getAlbum().getIsPublished() == "T") {
+				if (track.getAlbum().getIsPublished().equals("T")) {
 					return false;
 				}
 				// Verify ownership.

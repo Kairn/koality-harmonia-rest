@@ -23,6 +23,10 @@ import io.jsonwebtoken.Jwts;
  */
 public class SecurityUtility {
 
+	private SecurityUtility() {
+		// Include a private constructor to prevent instantiation.
+	}
+
 	/**
 	 * 
 	 * Returns a randomly generated alphanumeric string with a fixed length of 4

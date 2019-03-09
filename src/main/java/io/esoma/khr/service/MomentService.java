@@ -1,6 +1,7 @@
 package io.esoma.khr.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -202,7 +203,7 @@ public class MomentService {
 		try {
 			jo = new JSONObject(dateData);
 		} catch (Exception e) {
-			return null;
+			return new ArrayList<Moment>();
 		}
 
 		// Extract the date information.
@@ -211,7 +212,7 @@ public class MomentService {
 			String dateString = jo.getString("postDate").substring(0, 10);
 			postDate = LocalDate.parse(dateString);
 		} catch (Exception e) {
-			return null;
+			return new ArrayList<Moment>();
 		}
 
 		List<Moment> momentList = this.momentDao.getAllMomentsByDate(postDate);

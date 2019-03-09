@@ -137,7 +137,7 @@ public class KoalibeeService {
 
 		// Each new account receives 100 free ETA coins.
 		koalibee.setEtaBalance(100);
-		// Persist the new user in the database;
+		// Persist the new user in the database.
 		Integer koalibeeId = this.koalibeeDao.addKoalibee(koalibee);
 		if (koalibeeId != 0) {
 			authData.put("koalibeeId", koalibeeId.toString());
@@ -191,7 +191,7 @@ public class KoalibeeService {
 		} else {
 			Koalibee koalibee = this.koalibeeDao.getKoalibeeByEmail(authData.get("email"));
 			if (koalibee != null) {
-				authData.put("koalibeeId", new Integer(koalibee.getKoalibeeId()).toString());
+				authData.put("koalibeeId", Integer.toString(koalibee.getKoalibeeId()));
 				authData.put("passwordSalt", koalibee.getCredentials().getPasswordSalt());
 				authData.put("passwordHash", koalibee.getCredentials().getPasswordHash());
 				return authService.authenticate(authData);
@@ -272,7 +272,7 @@ public class KoalibeeService {
 			String avatarDataUrl = jo.getString("avatarDataUrl");
 			koalibee.setAvatar(DataUtility.decodeDataUrlToBytes(avatarDataUrl));
 			koalibee.setAvatarType(
-					avatarDataUrl.substring(avatarDataUrl.indexOf("/") + 1, avatarDataUrl.indexOf(";")).toUpperCase());
+					avatarDataUrl.substring(avatarDataUrl.indexOf('/') + 1, avatarDataUrl.indexOf(';')).toUpperCase());
 		} catch (Exception e) {
 			koalibee.setAvatar(null);
 		}

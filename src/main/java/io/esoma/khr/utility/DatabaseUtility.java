@@ -10,6 +10,10 @@ package io.esoma.khr.utility;
  */
 public class DatabaseUtility {
 
+	private DatabaseUtility() {
+		// Include a private constructor to prevent instantiation.
+	}
+
 	/**
 	 * 
 	 * Gets the environmental variables needed to establish a connection to the

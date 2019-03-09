@@ -12,6 +12,10 @@ import java.util.Base64;
  */
 public class DataUtility {
 
+	private DataUtility() {
+		// Include a private constructor to prevent instantiation.
+	}
+
 	/**
 	 * 
 	 * Returns a base64 encoded data url from a byte array that constitutes an image

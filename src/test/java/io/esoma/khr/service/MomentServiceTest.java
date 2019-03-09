@@ -302,7 +302,7 @@ public class MomentServiceTest {
 
 		final String source = "bad things";
 
-		assertNull(this.momentService.getByDate(source));
+		assertTrue(this.momentService.getByDate(source).isEmpty());
 
 	}
 

@@ -254,7 +254,7 @@ public class AlbumService {
 			return false;
 		}
 
-		if (album.getIsPublished() == "T") {
+		if (album.getIsPublished().equals("T")) {
 			return false;
 		}
 
@@ -275,7 +275,7 @@ public class AlbumService {
 		try {
 			String artworkDataUrl = jo.getString("artworkDataUrl");
 			album.setArtwork(DataUtility.decodeDataUrlToBytes(artworkDataUrl));
-			album.setArtworkType(artworkDataUrl.substring(artworkDataUrl.indexOf("/") + 1, artworkDataUrl.indexOf(";"))
+			album.setArtworkType(artworkDataUrl.substring(artworkDataUrl.indexOf('/') + 1, artworkDataUrl.indexOf(';'))
 					.toUpperCase());
 		} catch (Exception e) {
 			return false;
@@ -315,11 +315,11 @@ public class AlbumService {
 			return false;
 		}
 
-		if (album.getIsPublished() != "T") {
+		if (!album.getIsPublished().equals("T")) {
 			return false;
 		}
 
-		if (album.getIsPromoted() == "T") {
+		if (album.getIsPromoted().equals("T")) {
 			return false;
 		}
 
