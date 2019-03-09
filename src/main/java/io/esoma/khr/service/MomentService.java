@@ -203,7 +203,7 @@ public class MomentService {
 		try {
 			jo = new JSONObject(dateData);
 		} catch (Exception e) {
-			return new ArrayList<Moment>();
+			return new ArrayList<>();
 		}
 
 		// Extract the date information.
@@ -212,7 +212,7 @@ public class MomentService {
 			String dateString = jo.getString("postDate").substring(0, 10);
 			postDate = LocalDate.parse(dateString);
 		} catch (Exception e) {
-			return new ArrayList<Moment>();
+			return new ArrayList<>();
 		}
 
 		List<Moment> momentList = this.momentDao.getAllMomentsByDate(postDate);
