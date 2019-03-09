@@ -87,7 +87,7 @@ public class AlbumService {
 	 * 
 	 * @param koalibeeId the ID of the koalibee.
 	 * @param albumData  the JSON string sent from the request.
-	 * @return a positive integer if the posting succeeds, or 0 if it fails.
+	 * @return a positive integer if the creation succeeds, or 0 if it fails.
 	 */
 	public int create(int koalibeeId, String albumData) {
 

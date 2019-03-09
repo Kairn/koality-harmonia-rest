@@ -44,7 +44,8 @@ public interface ReviewDao {
 
 	/**
 	 * 
-	 * Delete a review record from the database.
+	 * Deletes a review record from the database. It can only be accessed by a
+	 * system administrator.
 	 * 
 	 * @param reviewId the ID of the record to be deleted.
 	 * @return true if record is deleted, or false otherwise.
