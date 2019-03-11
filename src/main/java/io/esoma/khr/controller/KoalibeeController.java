@@ -1,18 +1,25 @@
 package io.esoma.khr.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.service.AuthService;
 import io.esoma.khr.service.KoalibeeService;
@@ -130,7 +137,7 @@ public class KoalibeeController {
 
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		// Authenticate the jws.
+		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		boolean valid = false;
@@ -170,6 +177,312 @@ public class KoalibeeController {
 		}
 
 		return ResponseEntity.status(status).body(koalibee);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request that attempts to update a koalibee's information.
+	 * 
+	 * @param koalibeeId   the ID of the koalibee.
+	 * @param koalibeeData the JSON string containing the update information.
+	 * @param jws          the signed authentication token.
+	 * @return a general message indicating success or failure.
+	 */
+	@PutMapping(path = "/profile/{koalibeeId}")
+	public ResponseEntity<String> updateKoalibee(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestBody String koalibeeData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		String result = new String();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		boolean valid = false;
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = "authentication token expired";
+		} else if (authId == koalibeeId) {
+			valid = true;
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = "not authorized";
+		}
+
+		if (valid) {
+			if (this.koalibeeService.updateInformation(koalibeeId, koalibeeData)) {
+				status = HttpStatus.OK;
+				result = "profile updated successfully";
+			} else {
+				status = HttpStatus.UNPROCESSABLE_ENTITY;
+				result = "failed to update";
+			}
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request that attempts to change the credentials (email or
+	 * password or both) of a koalibee.
+	 * 
+	 * @param koalibeeId      the ID of the koalibee.
+	 * @param credentialsData the JSON string containing the new credentials.
+	 * @param jws             the signed authentication token.
+	 * @return a general message indicating success or failure.
+	 */
+	@PutMapping(path = "/credentials/{koalibeeId}")
+	public ResponseEntity<String> changeKoalibeeCredentials(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestBody String credentialsData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		String result = new String();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		boolean valid = false;
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = "authentication token expired";
+		} else if (authId == koalibeeId) {
+			valid = true;
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = "not authorized";
+		}
+
+		if (valid) {
+			if (this.koalibeeService.updateCredentials(koalibeeId, credentialsData)) {
+				status = HttpStatus.OK;
+				result = "credentials changed successfully";
+			} else {
+				status = HttpStatus.UNPROCESSABLE_ENTITY;
+				result = "failed to change credentials";
+			}
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request of a koalibee making an album purchase.
+	 * 
+	 * @param koalibeeId the ID of the koalibee.
+	 * @param albumData  the JSON string containing the ID of the album.
+	 * @param jws        the signed authentication token.
+	 * @return a general message indicating success or failure.
+	 */
+	@PostMapping(path = "/purchase/{koalibeeId}")
+	public ResponseEntity<String> purchaseAlbumForKoalibee(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestBody String albumData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		String result = new String();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		boolean valid = false;
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = "authentication token expired";
+		} else if (authId == koalibeeId) {
+			valid = true;
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = "not authorized";
+		}
+
+		if (valid) {
+			if (this.koalibeeService.purchaseAlbum(koalibeeId, albumData)) {
+				status = HttpStatus.OK;
+				result = "album purchased successfully";
+			} else {
+				status = HttpStatus.UNPROCESSABLE_ENTITY;
+				result = "failed to make the purchase";
+			}
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request from a system administrator to permanently delete
+	 * a koalibee's account. All associated albums, moments, and reviews will be
+	 * deleted as well.
+	 * 
+	 * @param koalibeeId the ID of the koalibee.
+	 * @param jws        the signed authentication token.
+	 * @return a general message indicating success or failure.
+	 */
+	@DeleteMapping(path = "/delete/{koalibeeId}")
+	public ResponseEntity<String> deleteKoalibeeAccount(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		String result = new String();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = "authentication token expired";
+		} else if (authId == -777) {
+			if (this.koalibeeService.delete(koalibeeId)) {
+				status = HttpStatus.OK;
+				result = "koalibee account deleted successfully";
+			} else {
+				status = HttpStatus.NOT_FOUND;
+				result = "failed to delete koalibee account";
+			}
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = "administrator privilege required";
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request from a system administrator to fetch a list of all
+	 * registered koalibees.
+	 * 
+	 * @param jws the signed authentication token.
+	 * @return a list of koalibee objects found in the database. An empty list is
+	 *         returned if there are no registered koalibee. Null is returned if the
+	 *         request does not have the authorization.
+	 */
+	@GetMapping(path = "/get/all")
+	public ResponseEntity<List<Koalibee>> listAllKoalibees(@Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		List<Koalibee> result = new ArrayList<>();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = null;
+		} else if (authId == -777) {
+			status = HttpStatus.OK;
+			result = this.koalibeeService.getAll();
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = null;
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request of retrieving all albums owned by a koalibee.
+	 * 
+	 * @param koalibeeId the ID of the owner.
+	 * @param jws        the signed authentication token.
+	 * @return a list of album objects. An empty list is returned if the koalibee
+	 *         does not own any album. Null is returned if the request cannot be
+	 *         authenticated.
+	 */
+	@GetMapping(path = "/album/owned")
+	public ResponseEntity<List<Album>> getKoalibeeInventory(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		List<Album> result = new ArrayList<>();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = null;
+		} else if (authId == koalibeeId) {
+			status = HttpStatus.OK;
+			result = this.koalibeeService.getInventory(koalibeeId);
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = null;
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * Responds to a HTTP request of retrieving all created but unpublished albums.
+	 * 
+	 * @param koalibeeId the ID of the koalibee.
+	 * @param jws        the signed authentication token.
+	 * @return a list of album objects. An empty list is returned if the koalibee
+	 *         does not have unpublished album. Null is returned if the request
+	 *         cannot be authenticated.
+	 */
+	@GetMapping(path = "/album/unpublished")
+	public ResponseEntity<List<Album>> getKoalibeeCreations(@Validated @PathVariable int koalibeeId,
+			@Validated @RequestHeader(name = "Auth-Token") String jws) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		List<Album> result = new ArrayList<>();
+
+		// Validate the JWS.
+		int authId = this.authService.reauthenticate(jws);
+
+		if (authId == -1) {
+			status = HttpStatus.EXPECTATION_FAILED;
+			result = null;
+		} else if (authId == koalibeeId) {
+			status = HttpStatus.OK;
+			result = this.koalibeeService.getUnpublished(koalibeeId);
+		} else {
+			status = HttpStatus.UNAUTHORIZED;
+			result = null;
+		}
+
+		return ResponseEntity.status(status).body(result);
+
+	}
+
+	/**
+	 * 
+	 * A generic method to handle all exceptions thrown by the controller methods.
+	 * 
+	 * @param e the exception thrown.
+	 * @return a generic error message with a bad request status code.
+	 */
+	@ExceptionHandler
+	public ResponseEntity<String> handleException(Exception e) {
+
+		final String errorMessage = "The server has encountered an unknown error, please contact the server maintainer if you have questions.";
+
+		// Debug stack trace.
+		e.printStackTrace();
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
 
 	}
 
