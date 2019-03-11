@@ -479,8 +479,8 @@ public class KoalibeeController {
 
 		final String errorMessage = "The server has encountered an unknown error, please contact the server maintainer if you have questions.";
 
-		// Debug stack trace.
-		e.printStackTrace();
+		// Debug message
+		System.out.println("exception encountered, type: " + e.getClass().getName());
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
 
