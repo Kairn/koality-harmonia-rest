@@ -67,7 +67,6 @@ public class HibernateH2Configuration {
 		h2DataSource.setUsername(DatabaseUtility.getH2DBUsername());
 		h2DataSource.setPassword(DatabaseUtility.getH2DBPassword());
 		// Rollback on return.
-		h2DataSource.setAutoCommitOnReturn(false);
 		h2DataSource.setRollbackOnReturn(true);
 
 		return h2DataSource;
