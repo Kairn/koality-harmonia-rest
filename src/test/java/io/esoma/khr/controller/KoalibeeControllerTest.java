@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
@@ -170,6 +171,18 @@ public class KoalibeeControllerTest {
 		assertEquals(200, result.getStatusCodeValue());
 
 		assertEquals("a.good.jws", result.getBody());
+
+	}
+
+	public void testLogout() throws Exception {
+
+		Mockito.doNothing().when(this.authService).setToExpire();
+
+		ResponseEntity<String> result = this.koalibeeController.logout();
+
+		assertEquals(200, result.getStatusCodeValue());
+
+		assertEquals("successfully logged out", result.getBody());
 
 	}
 
