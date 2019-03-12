@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -480,25 +479,6 @@ public class KoalibeeController {
 		}
 
 		return ResponseEntity.status(status).body(result);
-
-	}
-
-	/**
-	 * 
-	 * A generic method to handle all exceptions thrown by the controller methods.
-	 * 
-	 * @param e the exception thrown.
-	 * @return a generic error message with a bad request status code.
-	 */
-	@ExceptionHandler
-	public ResponseEntity<String> handleException(Exception e) {
-
-		final String errorMessage = "The server has encountered an unknown error, please contact the server maintainer if you have questions.";
-
-		// Debug message
-		System.out.println("exception encountered, type: " + e.getClass().getName());
-
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
 
 	}
 

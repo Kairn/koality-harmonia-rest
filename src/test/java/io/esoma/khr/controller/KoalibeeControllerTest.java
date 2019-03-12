@@ -174,6 +174,7 @@ public class KoalibeeControllerTest {
 
 	}
 
+	@Test
 	public void testLogout() throws Exception {
 
 		Mockito.doNothing().when(this.authService).setToExpire();
@@ -632,19 +633,6 @@ public class KoalibeeControllerTest {
 		assertEquals(200, result.getStatusCodeValue());
 
 		assertTrue(result.getBody() instanceof ArrayList);
-
-	}
-
-	@Test
-	public void testHandleException() throws Exception {
-
-		ResponseEntity<String> result = this.koalibeeController.handleException(new Exception());
-
-		assertEquals(400, result.getStatusCodeValue());
-
-		assertEquals(
-				"The server has encountered an unknown error, please contact the server maintainer if you have questions.",
-				result.getBody());
 
 	}
 

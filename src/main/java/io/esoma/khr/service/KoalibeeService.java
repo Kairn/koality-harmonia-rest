@@ -130,6 +130,7 @@ public class KoalibeeService {
 				authData.put("password", password);
 				authData.put("passwordSalt", passwordSalt);
 				authData.put("passwordHash", passwordHash);
+				koalibee.setCredentials(credentials);
 			}
 		} catch (Exception e) {
 			return "bad password";
