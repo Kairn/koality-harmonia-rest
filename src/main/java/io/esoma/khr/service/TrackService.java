@@ -1,5 +1,6 @@
 package io.esoma.khr.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -236,9 +237,22 @@ public class TrackService {
 	 * albums can be viewed publicly.
 	 * 
 	 * @param albumId the ID of the album.
-	 * @return the track list. 
+	 * @return the track list, and list will be empty if the user is not the creator
+	 *         of an unpublished album.
 	 */
 	public List<Track> getFromAlbum(int koalibeeId, int albumId) {
+
+		Album album = this.albumDao.getAlbumById(albumId);
+
+		// Verify ownership.
+		if (album != null) {
+			if (album.getIsPublished().equals("F") && album.getKoalibee().getKoalibeeId() != koalibeeId
+					&& koalibeeId != -777) {
+				return new ArrayList<>();
+			}
+		} else {
+			return new ArrayList<>();
+		}
 
 		List<Track> trackList = this.trackDao.getAllTracksByAlbum(albumId);
 

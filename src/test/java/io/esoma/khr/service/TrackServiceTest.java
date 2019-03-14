@@ -105,6 +105,7 @@ public class TrackServiceTest {
 		when(this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(1)).thenReturn(albumList);
 		when(this.albumdao.getAlbumById(1)).thenReturn(albumList.get(0));
 		when(this.albumdao.getAlbumById(2)).thenReturn(albumList.get(1));
+		when(this.albumdao.getAlbumById(7)).thenReturn(albumList.get(1));
 		when(this.trackDao.getTrackById(1)).thenReturn(trackList.get(0));
 		when(this.trackDao.getTrackById(2)).thenReturn(trackList.get(1));
 		when(this.trackDao.getTrackById(3)).thenReturn(trackList.get(2));
@@ -334,14 +335,21 @@ public class TrackServiceTest {
 	@Test
 	public void testGetFromAlbumN() throws Exception {
 
-		assertTrue(this.trackService.getFromAlbum(6).isEmpty());
+		assertTrue(this.trackService.getFromAlbum(1, 6).isEmpty());
+
+	}
+
+	@Test
+	public void testGetFromAlbumUA() throws Exception {
+
+		assertTrue(this.trackService.getFromAlbum(3, 2).isEmpty());
 
 	}
 
 	@Test
 	public void testGetFromAlbumS() throws Exception {
 
-		List<Track> trackList = this.trackService.getFromAlbum(7);
+		List<Track> trackList = this.trackService.getFromAlbum(2, 7);
 
 		assertNull(trackList.get(2).getAudio());
 
