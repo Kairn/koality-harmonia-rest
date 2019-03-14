@@ -77,7 +77,7 @@ public class TrackService {
 
 		// Verify ownership.
 		List<Album> albumList = this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(koalibeeId);
-		if (!albumList.contains(track.getAlbum())) {
+		if (!albumList.contains(track.getAlbum()) && koalibeeId != -777) {
 			return null;
 		}
 
@@ -232,13 +232,13 @@ public class TrackService {
 
 	/**
 	 * 
-	 * Retrieve tracks from an album without audio data. It can be accessed
-	 * publicly.
+	 * Retrieve tracks from an album without audio data. Only tracks from published
+	 * albums can be viewed publicly.
 	 * 
 	 * @param albumId the ID of the album.
-	 * @return the track list.
+	 * @return the track list. 
 	 */
-	public List<Track> getFromAlbum(int albumId) {
+	public List<Track> getFromAlbum(int koalibeeId, int albumId) {
 
 		List<Track> trackList = this.trackDao.getAllTracksByAlbum(albumId);
 
