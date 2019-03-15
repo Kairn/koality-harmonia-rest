@@ -188,7 +188,9 @@ public class ReviewController {
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
-		if (authId == -777) {
+		if (authId == -1) {
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ArrayList<Review>());
+		} else if (authId == -777) {
 			return ResponseEntity.ok(this.reviewService.getAll());
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ArrayList<Review>());
