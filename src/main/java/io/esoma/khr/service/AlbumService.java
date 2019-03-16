@@ -67,11 +67,12 @@ public class AlbumService {
 			album.setReviewList(null);
 			album.setTrackList(null);
 			if (album.getKoalibee() != null) {
-				album.getKoalibee().setAlbumList(null);
-				album.getKoalibee().setAvatar(null);
-				album.getKoalibee().setAvatarType(null);
-				album.getKoalibee().setAvatarDataUrl(null);
-				album.getKoalibee().setCredentials(null);
+				// Replace the proxy with a real POJO.
+				Koalibee pojoKoalibee = new Koalibee(album.getKoalibee().getKoalibeeId());
+				pojoKoalibee.setFirstName(album.getKoalibee().getFirstName());
+				pojoKoalibee.setLastName(album.getKoalibee().getLastName());
+				pojoKoalibee.setEmail(album.getKoalibee().getEmail());
+				album.setKoalibee(pojoKoalibee);
 			}
 		}
 

@@ -2,6 +2,7 @@ package io.esoma.khr.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +18,24 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
  */
 @RestControllerAdvice(basePackages = "io.esoma.khr.controller")
 public class ExceptionController {
+
+	/**
+	 * 
+	 * Handles exceptions occurred due to the request URL is missing a required path
+	 * variable.
+	 * 
+	 * @param e the exception thrown.
+	 * @return an error message reporting on the missing path variable.
+	 */
+	@ExceptionHandler(value = MissingPathVariableException.class)
+	public ResponseEntity<String> handleMissingPathVariable(MissingPathVariableException e) {
+
+		final String missingPathMessage = String.format("This request is missing <%s> path variable.",
+				e.getVariableName());
+
+		return ResponseEntity.badRequest().body(missingPathMessage);
+
+	}
 
 	/**
 	 * 
@@ -69,6 +88,8 @@ public class ExceptionController {
 
 		// Debug message
 		System.out.println("exception encountered, type: " + e.getClass().getName());
+
+		e.printStackTrace();
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
 

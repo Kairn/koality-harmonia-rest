@@ -420,7 +420,7 @@ public class KoalibeeController {
 	 *         does not own any album. Null is returned if the request cannot be
 	 *         authenticated.
 	 */
-	@GetMapping(path = "/album/owned")
+	@GetMapping(path = "/album/owned/{koalibeeId}")
 	public ResponseEntity<List<Album>> getKoalibeeInventory(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
@@ -456,7 +456,7 @@ public class KoalibeeController {
 	 *         does not have unpublished album. Null is returned if the request
 	 *         cannot be authenticated.
 	 */
-	@GetMapping(path = "/album/unpublished")
+	@GetMapping(path = "/album/unpublished/{koalibeeId}")
 	public ResponseEntity<List<Album>> getKoalibeeCreations(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 

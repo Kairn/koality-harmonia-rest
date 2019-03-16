@@ -12,6 +12,7 @@ import org.junit.runners.MethodSorters;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -31,6 +32,20 @@ public class ExceptionControllerTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Test
+	public void testHandleMissingPathVariable() throws Exception {
+
+		final MissingPathVariableException mockException = new MissingPathVariableException("koalibeeId",
+				mock(MethodParameter.class));
+
+		ResponseEntity<String> result = this.exceptionController.handleMissingPathVariable(mockException);
+
+		assertEquals(400, result.getStatusCodeValue());
+
+		assertEquals("This request is missing <koalibeeId> path variable.", result.getBody());
+
 	}
 
 	@Test
