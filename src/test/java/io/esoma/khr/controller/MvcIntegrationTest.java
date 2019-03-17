@@ -128,7 +128,7 @@ public class MvcIntegrationTest {
 				.perform(get("/album/get/1").accept(MediaType.APPLICATION_JSON_UTF8).header("Auth-Token", "adj"))
 				.andExpect(status().isOk()).andReturn();
 
-		assertTrue(result.getResponse().getContentAsString().contains("Études d'exécution transcendante"));
+		assertTrue(result.getResponse().getContentAsString().contains("transcendante"));
 
 	}
 
@@ -149,7 +149,7 @@ public class MvcIntegrationTest {
 				.perform(get("/track/get/all").accept(MediaType.APPLICATION_JSON_UTF8).header("Auth-Token", "adj"))
 				.andExpect(status().isOk()).andReturn();
 
-		assertTrue(result.getResponse().getContentAsString().contains("No. 2 (Fusées)"));
+		assertTrue(result.getResponse().getContentAsString().contains("No. 2"));
 
 		assertTrue(result.getResponse().getContentAsString().contains("No. 8 Sunshine"));
 
