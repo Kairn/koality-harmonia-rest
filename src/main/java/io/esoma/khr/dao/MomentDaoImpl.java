@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Moment;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -52,7 +53,7 @@ public class MomentDaoImpl implements MomentDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getMomentById, stack trace:", e);
 			moment = null;
 		}
 
@@ -77,7 +78,7 @@ public class MomentDaoImpl implements MomentDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getMomentByKoalibeeAndDate, stack trace:", e);
 			moment = null;
 		}
 
@@ -99,7 +100,7 @@ public class MomentDaoImpl implements MomentDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in addMoment, stack trace:", e);
 			id = 0;
 		}
 
@@ -124,7 +125,7 @@ public class MomentDaoImpl implements MomentDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllMoments, stack trace:", e);
 			momentList.clear();
 		}
 
@@ -149,7 +150,7 @@ public class MomentDaoImpl implements MomentDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllMomentsByDate, stack trace:", e);
 			momentList.clear();
 		}
 
@@ -171,7 +172,7 @@ public class MomentDaoImpl implements MomentDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in deleteMoment, stack trace:", e);
 			success = false;
 		}
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -55,7 +56,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getKoalibeeById, stack trace:", e);
 			koalibee = null;
 		}
 
@@ -82,7 +83,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getKoalibeeByEmail, stack trace:", e);
 			koalibee = null;
 		}
 
@@ -102,7 +103,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in addKoalibee, stack trace:", e);
 			id = 0;
 		}
 
@@ -135,7 +136,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in updateKoalibee, stack trace:", e);
 			success = false;
 		}
 
@@ -166,7 +167,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in updateCredentials, stack trace:", e);
 			success = false;
 		}
 
@@ -188,7 +189,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in updateEtaBalance, stack trace:", e);
 			success = false;
 		}
 
@@ -211,7 +212,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in purchaseAlbum, stack trace:", e);
 			success = false;
 		}
 
@@ -233,7 +234,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in deleteKoalibee, stack trace:", e);
 			success = false;
 		}
 
@@ -255,7 +256,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllEmails, stack trace:", e);
 			emailList.clear();
 		}
 
@@ -277,7 +278,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllKoalibees, stack trace:", e);
 			koalibeeList.clear();
 		}
 
@@ -303,7 +304,7 @@ public class KoalibeeDaoImpl implements KoalibeeDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllPurchasedAlbumsByKoalibeeId, stack trace:", e);
 			albumList.clear();
 		}
 

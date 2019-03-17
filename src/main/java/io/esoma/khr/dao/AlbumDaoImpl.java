@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Genre;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -57,7 +58,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAlbumById, stack trace:", e);
 			album = null;
 		}
 
@@ -77,7 +78,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in addAlbum, stack trace:", e);
 			id = 0;
 		}
 
@@ -109,7 +110,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in updateAlbum, stack trace:", e);
 			success = false;
 		}
 
@@ -131,7 +132,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in deleteAlbum, stack trace:", e);
 			success = false;
 		}
 
@@ -158,7 +159,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in publishAlbum, stack trace:", e);
 			success = false;
 		}
 
@@ -180,7 +181,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in promoteAlbum, stack trace:", e);
 			success = false;
 		}
 
@@ -202,7 +203,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllAlbums, stack trace:", e);
 			albumList.clear();
 		}
 
@@ -225,7 +226,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getUnpublishedAlbumsByKoalibee, stack trace:", e);
 			albumList.clear();
 		}
 
@@ -252,7 +253,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllPublishedAlbums, stack trace:", e);
 			albumList.clear();
 		}
 

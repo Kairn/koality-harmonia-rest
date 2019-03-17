@@ -4,12 +4,13 @@
 
 	<Appenders>
 		<Console name="STDOUT" target="SYSTEM_OUT">
-			<PatternLayout pattern="%p: %m %ex%n" />
+			<PatternLayout pattern="%p: %m %throwable{short}%n" />
 		</Console>
 
 		<File name="masterAppender" fileName="logs/khr-master.log">
 			<PatternLayout>
-				<Pattern>%d{MMM-dd, HH:mm} %p: %c{1} [%t] %m %ex%n</Pattern>
+				<Pattern>%d{YYYY-MMM-dd, HH:mm} %p: %c{1} [%t] %m %throwable{10}%n%n
+				</Pattern>
 			</PatternLayout>
 		</File>
 	</Appenders>
@@ -20,7 +21,7 @@
 			<AppenderRef ref="STDOUT" level="error" />
 		</Logger>
 
-		<Root level="info" additivity="true">
+		<Root level="info" additivity="false">
 			<AppenderRef ref="STDOUT" level="info" />
 		</Root>
 	</Loggers>

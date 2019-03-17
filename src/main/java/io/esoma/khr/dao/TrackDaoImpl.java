@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import io.esoma.khr.model.Track;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -58,7 +59,7 @@ public class TrackDaoImpl implements TrackDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getTrackById, stack trace:", e);
 			track = null;
 		}
 
@@ -78,7 +79,7 @@ public class TrackDaoImpl implements TrackDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in addTrack, stack trace:", e);
 			id = 0;
 		}
 
@@ -100,7 +101,7 @@ public class TrackDaoImpl implements TrackDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in deleteTrack, stack trace:", e);
 			success = false;
 		}
 
@@ -122,7 +123,7 @@ public class TrackDaoImpl implements TrackDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllTracks, stack trace:", e);
 			trackList.clear();
 		}
 
@@ -145,7 +146,7 @@ public class TrackDaoImpl implements TrackDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllTracksByAlbum, stack trace:", e);
 			trackList.clear();
 		}
 

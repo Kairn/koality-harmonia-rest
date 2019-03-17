@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import io.esoma.khr.model.Review;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -51,7 +52,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getReviewById, stack trace:", e);
 			review = null;
 		}
 
@@ -74,7 +75,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getReviewByAlbumAndKoalibee, stack trace:", e);
 			review = null;
 		}
 
@@ -94,7 +95,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in addReview, stack trace:", e);
 			id = 0;
 		}
 
@@ -116,7 +117,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			success = true;
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in deleteReview, stack trace:", e);
 			success = false;
 		}
 
@@ -142,7 +143,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllReviews, stack trace:", e);
 			reviewList.clear();
 		}
 
@@ -167,7 +168,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllReviewsByAlbum, stack trace:", e);
 			reviewList.clear();
 		}
 
@@ -193,7 +194,7 @@ public class ReviewDaoImpl implements ReviewDao {
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
-			System.out.println(e);
+			LogUtility.MASTER_LOGGER.error("error in getAllReviewsByKoalibee, stack trace:", e);
 			reviewList.clear();
 		}
 
