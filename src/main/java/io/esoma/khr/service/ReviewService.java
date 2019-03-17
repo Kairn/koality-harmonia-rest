@@ -12,6 +12,7 @@ import io.esoma.khr.dao.ReviewDao;
 import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Review;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -70,12 +71,17 @@ public class ReviewService {
 	 */
 	public Review searchOne(String reviewData) {
 
+		// Data element names
+		final String ALBUM_ID = "albumId";
+		final String KOALIBEE_ID = "koalibeeId";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(reviewData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return null;
 		}
 
@@ -84,14 +90,16 @@ public class ReviewService {
 
 		// Extract search conditions.
 		try {
-			albumId = jo.getInt("albumId");
+			albumId = jo.getInt(ALBUM_ID);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ALBUM_ID));
 			return null;
 		}
 
 		try {
-			koalibeeId = jo.getInt("koalibeeId");
+			koalibeeId = jo.getInt(KOALIBEE_ID);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, KOALIBEE_ID));
 			return null;
 		}
 
@@ -119,12 +127,17 @@ public class ReviewService {
 	 */
 	public int post(int koalibeeId, int albumId, String reviewData) {
 
+		// Data element names
+		final String RATING = "rating";
+		final String REVIEW_COMMENT = "reviewComment";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(reviewData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return 0;
 		}
 
@@ -144,16 +157,18 @@ public class ReviewService {
 
 		// Extract review data.
 		try {
-			int rating = jo.getInt("rating");
+			int rating = jo.getInt(RATING);
 			review.setRating(rating);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, RATING));
 			return 0;
 		}
 
 		try {
-			String reviewComment = jo.getString("reviewComment");
+			String reviewComment = jo.getString(REVIEW_COMMENT);
 			review.setReviewComment(reviewComment);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, REVIEW_COMMENT));
 			return 0;
 		}
 

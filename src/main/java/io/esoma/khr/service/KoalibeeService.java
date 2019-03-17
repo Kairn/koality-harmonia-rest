@@ -15,6 +15,7 @@ import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Credentials;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 import io.esoma.khr.utility.SecurityUtility;
 
 /**
@@ -26,6 +27,16 @@ import io.esoma.khr.utility.SecurityUtility;
  */
 @Service(value = "koalibeeService")
 public class KoalibeeService {
+
+	// Error messages
+	public static final String BAD_REQUEST = "bad request";
+	public static final String BAD_FIRST_NAME = "error while reading firstName";
+	public static final String BAD_LAST_NAME = "error while reading lastName";
+	public static final String BAD_EMAIL = "error while reading email";
+	public static final String BAD_PASSWORD = "error while reading password";
+	public static final String DUPLICATE_EMAIL = "email is already registered";
+	public static final String NULL_EMAIL = "email does not exist";
+	public static final String DATABASE_ERROR = "unknown database error occurred";
 
 	private KoalibeeDao koalibeeDao;
 	private AlbumDao albumDao;
@@ -63,6 +74,12 @@ public class KoalibeeService {
 	 */
 	public String register(String koalibeeData) {
 
+		// Data element names
+		final String FIRST_NAME = "firstName";
+		final String LAST_NAME = "lastName";
+		final String EMAIL = "email";
+		final String PASSWORD = "password";
+
 		JSONObject jo;
 
 		Map<String, String> authData = new HashMap<>();
@@ -71,7 +88,8 @@ public class KoalibeeService {
 		try {
 			jo = new JSONObject(koalibeeData);
 		} catch (Exception e) {
-			return "bad request";
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
+			return BAD_REQUEST;
 		}
 
 		Credentials credentials = new Credentials();
@@ -79,61 +97,65 @@ public class KoalibeeService {
 
 		// Validate first name.
 		try {
-			String firstName = jo.getString("firstName");
+			String firstName = jo.getString(FIRST_NAME);
 			if (firstName.length() < 1) {
-				return "bad first name";
+				return BAD_FIRST_NAME;
 			} else {
 				koalibee.setFirstName(firstName);
 			}
 		} catch (Exception e) {
-			return "bad first name";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, FIRST_NAME));
+			return BAD_FIRST_NAME;
 		}
 		// Validate last name.
 		try {
-			String lastName = jo.getString("lastName");
+			String lastName = jo.getString(LAST_NAME);
 			if (lastName.length() < 1) {
-				return "bad last name";
+				return BAD_LAST_NAME;
 			} else {
 				koalibee.setLastName(lastName);
 			}
 		} catch (Exception e) {
-			return "bad last name";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, LAST_NAME));
+			return BAD_LAST_NAME;
 		}
 		// Validate email.
 		try {
-			String email = jo.getString("email");
+			String email = jo.getString(EMAIL);
 			if (!email.contains("@") || email.length() < 5) {
-				return "bad email";
+				return BAD_EMAIL;
 			} else {
 				if (this.koalibeeDao.getAllEmails().contains(email)) {
-					return "duplicate email";
+					return DUPLICATE_EMAIL;
 				} else {
 					koalibee.setEmail(email);
 					credentials.setEmail(email);
-					authData.put("email", email);
+					authData.put(EMAIL, email);
 				}
 			}
 		} catch (Exception e) {
-			return "bad email";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, EMAIL));
+			return BAD_EMAIL;
 		}
 
 		// Validate password.
 		try {
-			String password = jo.getString("password");
+			String password = jo.getString(PASSWORD);
 			if (password.length() < 6) {
-				return "bad password";
+				return BAD_PASSWORD;
 			} else {
 				String passwordSalt = SecurityUtility.getPasswordSaltStandard();
 				String passwordHash = SecurityUtility.getSHA256Digest(password + passwordSalt);
 				credentials.setPasswordSalt(passwordSalt);
 				credentials.setPasswordHash(passwordHash);
-				authData.put("password", password);
+				authData.put(PASSWORD, password);
 				authData.put("passwordSalt", passwordSalt);
 				authData.put("passwordHash", passwordHash);
 				koalibee.setCredentials(credentials);
 			}
 		} catch (Exception e) {
-			return "bad password";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PASSWORD));
+			return BAD_PASSWORD;
 		}
 
 		// Each new account receives 100 free ETA coins.
@@ -144,7 +166,7 @@ public class KoalibeeService {
 			authData.put("koalibeeId", koalibeeId.toString());
 			return authService.authenticate(authData);
 		} else {
-			return "database error";
+			return DATABASE_ERROR;
 		}
 
 	}
@@ -160,44 +182,51 @@ public class KoalibeeService {
 	 */
 	public String login(String credentialsData) {
 
+		// Data element names
+		final String EMAIL = "email";
+		final String PASSWORD = "password";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(credentialsData);
 		} catch (Exception e) {
-			return "bad request";
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
+			return BAD_REQUEST;
 		}
 
 		Map<String, String> authData = new HashMap<>();
 
 		// Retrieve email.
 		try {
-			String email = jo.getString("email");
-			authData.put("email", email);
+			String email = jo.getString(EMAIL);
+			authData.put(EMAIL, email);
 		} catch (Exception e) {
-			return "bad email";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, EMAIL));
+			return BAD_EMAIL;
 		}
 		// Retrieve password.
 		try {
-			String password = jo.getString("password");
-			authData.put("password", password);
+			String password = jo.getString(PASSWORD);
+			authData.put(PASSWORD, password);
 		} catch (Exception e) {
-			return "bad password";
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PASSWORD));
+			return BAD_PASSWORD;
 		}
 
 		// Check if the user is a system administrator.
-		if (authData.get("email").equals("admin")) {
+		if (authData.get(EMAIL).equals(AuthService.ADMIN_NAME)) {
 			return authService.authenticate(authData);
 		} else {
-			Koalibee koalibee = this.koalibeeDao.getKoalibeeByEmail(authData.get("email"));
+			Koalibee koalibee = this.koalibeeDao.getKoalibeeByEmail(authData.get(EMAIL));
 			if (koalibee != null) {
 				authData.put("koalibeeId", Integer.toString(koalibee.getKoalibeeId()));
 				authData.put("passwordSalt", koalibee.getCredentials().getPasswordSalt());
 				authData.put("passwordHash", koalibee.getCredentials().getPasswordHash());
 				return authService.authenticate(authData);
 			} else {
-				return "null email";
+				return NULL_EMAIL;
 			}
 		}
 
@@ -244,6 +273,7 @@ public class KoalibeeService {
 		try {
 			jo = new JSONObject(koalibeeData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return false;
 		}
 
@@ -299,6 +329,7 @@ public class KoalibeeService {
 		try {
 			jo = new JSONObject(credentialsData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return false;
 		}
 
@@ -346,20 +377,25 @@ public class KoalibeeService {
 	 */
 	public boolean purchaseAlbum(int koalibeeId, String albumData) {
 
+		// Data element names
+		final String ALBUM_ID = "albumId";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(albumData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return false;
 		}
 
 		// Try get the album ID.
 		int albumId;
 		try {
-			albumId = jo.getInt("albumId");
+			albumId = jo.getInt(ALBUM_ID);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ALBUM_ID));
 			return false;
 		}
 

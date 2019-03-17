@@ -12,12 +12,17 @@ import org.apache.logging.log4j.Logger;
  */
 public class LogUtility {
 
-	public static final Logger rootLogger;
-	public static final Logger masterLogger;
+	public static final Logger ROOT_LOGGER;
+	public static final Logger MASTER_LOGGER;
+
+	// General log messages.
+	public static final String BAD_JSON = "invalid JSON string in request body";
+	// Use with the format method.
+	public static final String MISSING_JSON_ELEMENT = "the following data element is missing or illegal: <%s>";
 
 	static {
-		rootLogger = LogManager.getRootLogger();
-		masterLogger = LogManager.getLogger("masterLogger");
+		ROOT_LOGGER = LogManager.getRootLogger();
+		MASTER_LOGGER = LogManager.getLogger("masterLogger");
 	}
 
 }

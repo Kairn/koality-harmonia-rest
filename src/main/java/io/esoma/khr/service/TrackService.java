@@ -14,6 +14,7 @@ import io.esoma.khr.dao.TrackDao;
 import io.esoma.khr.model.Album;
 import io.esoma.khr.model.Track;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -109,12 +110,20 @@ public class TrackService {
 	 */
 	public int addOne(int koalibeeId, int albumId, String trackData) {
 
+		// Data element names
+		final String TRACK_NAME = "trackName";
+		final String COMPOSER = "composer";
+		final String TRACK_LENGTH = "trackLength";
+		final String AUDIO_DATA_URL = "audioDataUrl";
+		final String IS_DEMO = "isDemo";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(trackData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return 0;
 		}
 
@@ -137,39 +146,44 @@ public class TrackService {
 
 		// Extract track data.
 		try {
-			String trackName = jo.getString("trackName");
+			String trackName = jo.getString(TRACK_NAME);
 			track.setTrackName(trackName);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, TRACK_NAME));
 			return 0;
 		}
 
 		try {
-			String composer = jo.getString("composer");
+			String composer = jo.getString(COMPOSER);
 			track.setComposer(composer);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, COMPOSER));
 			return 0;
 		}
 
 		try {
-			int trackLength = jo.getInt("trackLength");
+			int trackLength = jo.getInt(TRACK_LENGTH);
 			track.setTrackLength(trackLength);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, TRACK_LENGTH));
 			return 0;
 		}
 
 		try {
-			String audioDataUrl = jo.getString("audioDataUrl");
+			String audioDataUrl = jo.getString(AUDIO_DATA_URL);
 			track.setAudio(DataUtility.decodeDataUrlToBytes(audioDataUrl));
 			track.setAudioType(
 					audioDataUrl.substring(audioDataUrl.indexOf('/') + 1, audioDataUrl.indexOf(';')).toUpperCase());
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, AUDIO_DATA_URL));
 			return 0;
 		}
 
 		try {
-			String isDemo = jo.getString("isDemo");
+			String isDemo = jo.getString(IS_DEMO);
 			track.setIsDemo(isDemo);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, IS_DEMO));
 			return 0;
 		}
 

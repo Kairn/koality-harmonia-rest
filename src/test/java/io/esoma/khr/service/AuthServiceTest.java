@@ -59,7 +59,7 @@ public class AuthServiceTest {
 		authData.put("email", "admin");
 		authData.put("password", "wrong password");
 
-		assertEquals("unauthorized admin", this.authService.authenticate(authData));
+		assertEquals(AuthService.INVALID_ADMIN_CREDENTIALS, this.authService.authenticate(authData));
 
 	}
 
@@ -106,7 +106,7 @@ public class AuthServiceTest {
 		authData.put("passwordSalt", "2232");
 		authData.put("passwordHash", "6BAF874E281E434682BB7962E5989CC7204B6256C4059DA39D1E97DFF495F9CC");
 
-		assertEquals("unauthorized koalibee", this.authService.authenticate(authData));
+		assertEquals(AuthService.INVALID_KOALIBEE_CREDENTIALS, this.authService.authenticate(authData));
 
 	}
 

@@ -15,8 +15,8 @@
 	</Appenders>
 
 	<Loggers>
-		<Logger name="masterLogger" level="error" additivity="false">
-			<AppenderRef ref="masterAppender" level="error" />
+		<Logger name="masterLogger" level="warn" additivity="false">
+			<AppenderRef ref="masterAppender" level="warn" />
 			<AppenderRef ref="STDOUT" level="error" />
 		</Logger>
 

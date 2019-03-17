@@ -15,6 +15,7 @@ import io.esoma.khr.model.Genre;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Track;
 import io.esoma.khr.utility.DataUtility;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -92,12 +93,18 @@ public class AlbumService {
 	 */
 	public int create(int koalibeeId, String albumData) {
 
+		// Data element names
+		final String ALBUM_NAME = "albumName";
+		final String ARTIST = "artist";
+		final String GENRE_ID = "genreId";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(albumData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return 0;
 		}
 
@@ -112,23 +119,26 @@ public class AlbumService {
 
 		// Extract album data.
 		try {
-			String albumName = jo.getString("albumName");
+			String albumName = jo.getString(ALBUM_NAME);
 			album.setAlbumName(albumName);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ALBUM_NAME));
 			return 0;
 		}
 
 		try {
-			String artist = jo.getString("artist");
+			String artist = jo.getString(ARTIST);
 			album.setArtist(artist);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ARTIST));
 			return 0;
 		}
 
 		try {
-			int genreId = jo.getInt("genreId");
+			int genreId = jo.getInt(GENRE_ID);
 			album.setGenre(new Genre(genreId));
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, GENRE_ID));
 			return 0;
 		}
 
@@ -159,6 +169,7 @@ public class AlbumService {
 		try {
 			jo = new JSONObject(albumData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return false;
 		}
 
@@ -170,7 +181,7 @@ public class AlbumService {
 			return false;
 		}
 
-		// Extract album data.
+		// Try update the album name.
 		try {
 			String albumName = jo.getString("albumName");
 			album.setAlbumName(albumName);
@@ -178,6 +189,7 @@ public class AlbumService {
 			album.setAlbumName(null);
 		}
 
+		// Try update the artist.
 		try {
 			String artist = jo.getString("artist");
 			album.setArtist(artist);
@@ -185,6 +197,7 @@ public class AlbumService {
 			album.setArtist(null);
 		}
 
+		// Try update the genre ID.
 		try {
 			int genreId = jo.getInt("genreId");
 			album.setGenre(new Genre(genreId));
@@ -234,12 +247,17 @@ public class AlbumService {
 	 */
 	public boolean publish(int koalibeeId, int albumId, String albumData) {
 
+		// Data element names
+		final String ETA_PRICE = "etaPrice";
+		final String ARTWORK_DATA_URL = "artworkDataUrl";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(albumData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return false;
 		}
 
@@ -267,18 +285,20 @@ public class AlbumService {
 
 		// Extract publishing details.
 		try {
-			int etaPrice = jo.getInt("etaPrice");
+			int etaPrice = jo.getInt(ETA_PRICE);
 			album.setEtaPrice(etaPrice);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ETA_PRICE));
 			return false;
 		}
 
 		try {
-			String artworkDataUrl = jo.getString("artworkDataUrl");
+			String artworkDataUrl = jo.getString(ARTWORK_DATA_URL);
 			album.setArtwork(DataUtility.decodeDataUrlToBytes(artworkDataUrl));
 			album.setArtworkType(artworkDataUrl.substring(artworkDataUrl.indexOf('/') + 1, artworkDataUrl.indexOf(';'))
 					.toUpperCase());
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, ARTWORK_DATA_URL));
 			return false;
 		}
 

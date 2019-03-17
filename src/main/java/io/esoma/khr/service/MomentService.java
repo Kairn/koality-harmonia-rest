@@ -13,6 +13,7 @@ import io.esoma.khr.dao.KoalibeeDao;
 import io.esoma.khr.dao.MomentDao;
 import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.model.Moment;
+import io.esoma.khr.utility.LogUtility;
 
 /**
  * 
@@ -70,12 +71,17 @@ public class MomentService {
 	 */
 	public Moment searchOne(String momentData) {
 
+		// Data element names
+		final String KOALIBEE_ID = "koalibeeId";
+		final String POST_DATE = "postDate";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(momentData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return null;
 		}
 
@@ -84,16 +90,18 @@ public class MomentService {
 
 		// Extract koalibee ID.
 		try {
-			koalibeeId = jo.getInt("koalibeeId");
+			koalibeeId = jo.getInt(KOALIBEE_ID);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, KOALIBEE_ID));
 			return null;
 		}
 
 		// Extract ISO date string and convert it to a LocalDate.
 		try {
-			String dateString = jo.getString("postDate").substring(0, 10);
+			String dateString = jo.getString(POST_DATE).substring(0, 10);
 			postDate = LocalDate.parse(dateString);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, POST_DATE));
 			return null;
 		}
 
@@ -119,12 +127,16 @@ public class MomentService {
 	 */
 	public int postOne(int koalibeeId, String momentData) {
 
+		// Data element names
+		final String POST_COMMENT = "postComment";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(momentData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return 0;
 		}
 
@@ -142,9 +154,10 @@ public class MomentService {
 
 		// Extract moment data.
 		try {
-			String postComment = jo.getString("postComment");
+			String postComment = jo.getString(POST_COMMENT);
 			moment.setPostComment(postComment);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, POST_COMMENT));
 			return 0;
 		}
 
@@ -197,21 +210,26 @@ public class MomentService {
 	 */
 	public List<Moment> getByDate(String dateData) {
 
+		// Data element names
+		final String POST_DATE = "postDate";
+
 		JSONObject jo;
 
 		// Parse the JSON string.
 		try {
 			jo = new JSONObject(dateData);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(LogUtility.BAD_JSON);
 			return new ArrayList<>();
 		}
 
 		// Extract the date information.
 		LocalDate postDate;
 		try {
-			String dateString = jo.getString("postDate").substring(0, 10);
+			String dateString = jo.getString(POST_DATE).substring(0, 10);
 			postDate = LocalDate.parse(dateString);
 		} catch (Exception e) {
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, POST_DATE));
 			return new ArrayList<>();
 		}
 

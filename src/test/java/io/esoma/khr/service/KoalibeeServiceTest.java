@@ -141,7 +141,7 @@ public class KoalibeeServiceTest {
 	@Test
 	public void testRegisterBadJSON() throws Exception {
 
-		assertEquals("bad request", this.koalibeeService.register("bad JSON string"));
+		assertEquals(KoalibeeService.BAD_REQUEST, this.koalibeeService.register("bad JSON string"));
 
 	}
 
@@ -150,7 +150,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"\"}";
 
-		assertEquals("bad first name", this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.BAD_FIRST_NAME, this.koalibeeService.register(source));
 
 	}
 
@@ -159,7 +159,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"eddy\"}";
 
-		assertEquals("bad last name", this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.BAD_LAST_NAME, this.koalibeeService.register(source));
 
 	}
 
@@ -168,7 +168,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"eddy\",\"lastName\":\"soma\",\"email\":\"s.com\"}";
 
-		assertEquals("bad email", this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.BAD_EMAIL, this.koalibeeService.register(source));
 
 	}
 
@@ -177,7 +177,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"eddy\",\"lastName\":\"soma\",\"email\":\"other.dup@k.com\",\"password\":\"nnsss123n\"}";
 
-		assertEquals("duplicate email", this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.DUPLICATE_EMAIL, this.koalibeeService.register(source));
 
 	}
 
@@ -186,7 +186,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"eddy\",\"lastName\":\"soma\",\"email\":\"anothers@k.com\",\"password\":\"nnn\"}";
 
-		assertEquals("bad password", this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.BAD_PASSWORD, this.koalibeeService.register(source));
 
 	}
 
@@ -204,7 +204,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "invalid stuff";
 
-		assertEquals("bad request", this.koalibeeService.login(source));
+		assertEquals(KoalibeeService.BAD_REQUEST, this.koalibeeService.login(source));
 
 	}
 
@@ -213,7 +213,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"em?ail\":\"john.doe@example.com\",\"password\":\"jdoe123456\"}";
 
-		assertEquals("bad email", this.koalibeeService.login(source));
+		assertEquals(KoalibeeService.BAD_EMAIL, this.koalibeeService.login(source));
 
 	}
 
@@ -222,7 +222,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"email\":\"john.doe@example.com\"}";
 
-		assertEquals("bad password", this.koalibeeService.login(source));
+		assertEquals(KoalibeeService.BAD_PASSWORD, this.koalibeeService.login(source));
 
 	}
 
@@ -236,7 +236,7 @@ public class KoalibeeServiceTest {
 		when(this.koalibeeDao.getKoalibeeByEmail(nonExistEmail)).thenReturn(null);
 		this.koalibeeService.setKoalibeeDao(koalibeeDao);
 
-		assertEquals("null email", this.koalibeeService.login(source));
+		assertEquals(KoalibeeService.NULL_EMAIL, this.koalibeeService.login(source));
 
 	}
 

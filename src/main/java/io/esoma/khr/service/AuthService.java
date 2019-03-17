@@ -21,7 +21,10 @@ import io.jsonwebtoken.security.Keys;
 @Service(value = "authService")
 public class AuthService {
 
-	private static final String ADMIN_NAME = "admin";
+	public static final String ADMIN_NAME = "admin";
+	public static final String INVALID_ADMIN_CREDENTIALS = "invalid administrator credentials";
+	public static final String INVALID_KOALIBEE_CREDENTIALS = "invalid koalibee credentials";
+
 	private static final String ADMIN_SALT = "ADMIN";
 	private static final String ADMIN_HASH = "D780C505B2308EBD462B5622497E1ACAE98B34C12895692404BB0A4AE7B937C7";
 
@@ -77,26 +80,30 @@ public class AuthService {
 	 */
 	public String authenticate(Map<String, String> authData) {
 
+		// Data element names
+		final String EMAIL = "email";
+		final String PASSWORD = "password";
+
 		try {
 			// Authenticate a system administrator.
-			if (authData.get("email").equals(ADMIN_NAME)) {
-				if (SecurityUtility.isValidPassword(authData.get("password"), ADMIN_SALT, ADMIN_HASH)) {
+			if (authData.get(EMAIL).equals(ADMIN_NAME)) {
+				if (SecurityUtility.isValidPassword(authData.get(PASSWORD), ADMIN_SALT, ADMIN_HASH)) {
 					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(-777, "", this.key);
 				} else {
-					return "unauthorized admin";
+					return INVALID_ADMIN_CREDENTIALS;
 				}
 			}
 
 			// Authenticate a koalibee.
-			if (authData.get("email").contains("@")) {
-				if (SecurityUtility.isValidPassword(authData.get("password"), authData.get("passwordSalt"),
+			if (authData.get(EMAIL).contains("@")) {
+				if (SecurityUtility.isValidPassword(authData.get(PASSWORD), authData.get("passwordSalt"),
 						authData.get("passwordHash"))) {
 					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(Integer.parseInt(authData.get("koalibeeId")),
-							authData.get("email"), this.key);
+							authData.get(EMAIL), this.key);
 				} else {
-					return "unauthorized koalibee";
+					return INVALID_KOALIBEE_CREDENTIALS;
 				}
 			} else {
 				return "bad request";
