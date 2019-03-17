@@ -116,7 +116,7 @@ public class MomentControllerTest {
 
 		assertEquals(417, result.getStatusCodeValue());
 
-		assertEquals("authentication token expired", result.getBody());
+		assertEquals(ExceptionController.AUTH_TOKEN_EXPIRED, result.getBody());
 
 	}
 
@@ -127,7 +127,7 @@ public class MomentControllerTest {
 
 		assertEquals(401, result.getStatusCodeValue());
 
-		assertEquals("not authorized", result.getBody());
+		assertEquals(ExceptionController.UNAUTHORIZED, result.getBody());
 
 	}
 
@@ -201,7 +201,7 @@ public class MomentControllerTest {
 
 		assertEquals(417, result.getStatusCodeValue());
 
-		assertEquals("authentication token expired", result.getBody());
+		assertEquals(ExceptionController.AUTH_TOKEN_EXPIRED, result.getBody());
 
 	}
 
@@ -212,7 +212,7 @@ public class MomentControllerTest {
 
 		assertEquals(401, result.getStatusCodeValue());
 
-		assertEquals("administrator privilege required", result.getBody());
+		assertEquals(ExceptionController.UNAUTHORIZED, result.getBody());
 
 	}
 

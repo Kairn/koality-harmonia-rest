@@ -59,7 +59,7 @@ public class MomentController {
 	@GetMapping(path = "/get/{momentId}")
 	public ResponseEntity<Moment> getMoment(@Validated @PathVariable int momentId) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
 		Moment moment = this.momentService.getOne(momentId);
 
@@ -88,16 +88,16 @@ public class MomentController {
 	public ResponseEntity<String> postMoment(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestBody String momentData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == koalibeeId) {
 			if (this.momentService.postOne(koalibeeId, momentData) > 0) {
 				status = HttpStatus.CREATED;
@@ -108,7 +108,7 @@ public class MomentController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -160,16 +160,16 @@ public class MomentController {
 	public ResponseEntity<String> deleteMoment(@Validated @PathVariable int momentId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == -777) {
 			if (this.momentService.delete(momentId)) {
 				status = HttpStatus.OK;
@@ -180,7 +180,7 @@ public class MomentController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "administrator privilege required";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);

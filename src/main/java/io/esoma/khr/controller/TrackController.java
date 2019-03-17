@@ -62,7 +62,7 @@ public class TrackController {
 	public ResponseEntity<Track> getTrack(@Validated @PathVariable int trackId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
 		Track track = new Track();
 
@@ -103,16 +103,16 @@ public class TrackController {
 	public ResponseEntity<String> addTrackToAlbum(@Validated @PathVariable int albumId,
 			@Validated @RequestBody String trackData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId > 0) {
 			if (this.trackService.addOne(authId, albumId, trackData) > 0) {
 				status = HttpStatus.CREATED;
@@ -123,7 +123,7 @@ public class TrackController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -144,19 +144,19 @@ public class TrackController {
 	public ResponseEntity<String> deleteTrackFromAlbum(@Validated @PathVariable int trackId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == 0) {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		} else {
 			if (this.trackService.delete(authId, trackId)) {
 				status = HttpStatus.OK;
@@ -209,7 +209,7 @@ public class TrackController {
 	public ResponseEntity<List<Track>> getTracksFromAlbum(@Validated @PathVariable int albumId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
 		List<Track> result = new ArrayList<>();
 
@@ -222,7 +222,7 @@ public class TrackController {
 			status = HttpStatus.UNAUTHORIZED;
 		} else {
 			result = this.trackService.getFromAlbum(authId, albumId);
-			if (result.size() > 0) {
+			if (!result.isEmpty()) {
 				status = HttpStatus.OK;
 			} else {
 				status = HttpStatus.NOT_FOUND;

@@ -106,16 +106,16 @@ public class ReviewController {
 	public ResponseEntity<String> postReview(@Validated @PathVariable int albumId,
 			@Validated @RequestBody String reviewData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId > 0) {
 			if (this.reviewService.post(authId, albumId, reviewData) > 0) {
 				status = HttpStatus.CREATED;
@@ -126,7 +126,7 @@ public class ReviewController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -146,16 +146,16 @@ public class ReviewController {
 	public ResponseEntity<String> deleteReview(@Validated @PathVariable int reviewId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == -777) {
 			if (this.reviewService.delete(reviewId)) {
 				status = HttpStatus.OK;
@@ -166,7 +166,7 @@ public class ReviewController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);

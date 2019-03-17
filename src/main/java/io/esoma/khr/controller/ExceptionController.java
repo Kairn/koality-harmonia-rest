@@ -22,6 +22,10 @@ import io.esoma.khr.utility.LogUtility;
 @RestControllerAdvice(basePackages = "io.esoma.khr.controller")
 public class ExceptionController {
 
+	// General error message.
+	public static final String AUTH_TOKEN_EXPIRED = "authentication token has expired, please login again.";
+	public static final String UNAUTHORIZED = "invalid authentication token, or access is restricted";
+
 	/**
 	 * 
 	 * Handles exceptions occurred due to the request URL is missing a required path
@@ -68,8 +72,7 @@ public class ExceptionController {
 	 */
 	public ResponseEntity<String> handleBadRequestBody(HttpMessageNotReadableException e) {
 
-		final String badBodyMessage = String.format(
-				"This request is missing a request body, or the request body is incompatible with the type <java.lang.String>");
+		final String badBodyMessage = "This request is missing a request body, or the request body is incompatible with the type <java.lang.String>";
 
 		return ResponseEntity.badRequest().body(badBodyMessage);
 

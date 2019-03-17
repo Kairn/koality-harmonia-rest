@@ -155,7 +155,7 @@ public class ReviewControllerTest {
 
 		assertEquals(417, result.getStatusCodeValue());
 
-		assertEquals("authentication token expired", result.getBody());
+		assertEquals(ExceptionController.AUTH_TOKEN_EXPIRED, result.getBody());
 
 	}
 
@@ -166,7 +166,7 @@ public class ReviewControllerTest {
 
 		assertEquals(401, result.getStatusCodeValue());
 
-		assertEquals("not authorized", result.getBody());
+		assertEquals(ExceptionController.UNAUTHORIZED, result.getBody());
 
 	}
 
@@ -201,7 +201,7 @@ public class ReviewControllerTest {
 
 		assertEquals(417, result.getStatusCodeValue());
 
-		assertEquals("authentication token expired", result.getBody());
+		assertEquals(ExceptionController.AUTH_TOKEN_EXPIRED, result.getBody());
 
 	}
 
@@ -212,7 +212,7 @@ public class ReviewControllerTest {
 
 		assertEquals(401, result.getStatusCodeValue());
 
-		assertEquals("not authorized", result.getBody());
+		assertEquals(ExceptionController.UNAUTHORIZED, result.getBody());
 
 	}
 

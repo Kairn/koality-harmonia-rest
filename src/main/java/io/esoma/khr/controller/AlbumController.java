@@ -123,16 +123,16 @@ public class AlbumController {
 	public ResponseEntity<String> createAlbum(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestBody String albumData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == koalibeeId) {
 			if (this.albumService.create(koalibeeId, albumData) > 0) {
 				status = HttpStatus.CREATED;
@@ -143,7 +143,7 @@ public class AlbumController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -164,16 +164,16 @@ public class AlbumController {
 	public ResponseEntity<String> updateAlbumInformation(@Validated @PathVariable int albumId,
 			@Validated @RequestBody String albumData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId > 0) {
 			if (this.albumService.update(authId, albumId, albumData)) {
 				status = HttpStatus.OK;
@@ -184,7 +184,7 @@ public class AlbumController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -205,19 +205,19 @@ public class AlbumController {
 	public ResponseEntity<String> deleteAlbum(@Validated @PathVariable int albumId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == 0) {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		} else {
 			if (this.albumService.delete(authId, albumId)) {
 				status = HttpStatus.OK;
@@ -248,16 +248,16 @@ public class AlbumController {
 	public ResponseEntity<String> publishAlbum(@Validated @PathVariable int albumId,
 			@Validated @RequestBody String albumData, @Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId > 0) {
 			if (this.albumService.publish(authId, albumId, albumData)) {
 				status = HttpStatus.OK;
@@ -268,7 +268,7 @@ public class AlbumController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);
@@ -288,16 +288,16 @@ public class AlbumController {
 	public ResponseEntity<String> promoteAlbum(@Validated @PathVariable int albumId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId > 0) {
 			if (this.albumService.promote(authId, albumId)) {
 				status = HttpStatus.OK;
@@ -308,7 +308,7 @@ public class AlbumController {
 			}
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		return ResponseEntity.status(status).body(result);

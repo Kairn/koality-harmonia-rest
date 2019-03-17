@@ -1,6 +1,5 @@
 package io.esoma.khr.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +61,7 @@ public class KoalibeeController {
 	@PostMapping(path = "/register")
 	public ResponseEntity<String> registerKoalibee(@Validated @RequestBody String koalibeeData) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
 		String result = this.koalibeeService.register(koalibeeData);
 
@@ -97,7 +96,7 @@ public class KoalibeeController {
 	@PostMapping(path = "/login")
 	public ResponseEntity<String> loginKoalibee(@Validated @RequestBody String credentialsData) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
 		String result = this.koalibeeService.login(credentialsData);
 
@@ -210,7 +209,7 @@ public class KoalibeeController {
 
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
@@ -219,12 +218,12 @@ public class KoalibeeController {
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == koalibeeId) {
 			valid = true;
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		if (valid) {
@@ -257,7 +256,7 @@ public class KoalibeeController {
 
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
@@ -266,12 +265,12 @@ public class KoalibeeController {
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == koalibeeId) {
 			valid = true;
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		if (valid) {
@@ -303,7 +302,7 @@ public class KoalibeeController {
 
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
@@ -312,12 +311,12 @@ public class KoalibeeController {
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == koalibeeId) {
 			valid = true;
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
-			result = "not authorized";
+			result = ExceptionController.UNAUTHORIZED;
 		}
 
 		if (valid) {
@@ -348,16 +347,16 @@ public class KoalibeeController {
 	public ResponseEntity<String> deleteKoalibeeAccount(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		String result = new String();
+		String result = "";
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -1) {
 			status = HttpStatus.EXPECTATION_FAILED;
-			result = "authentication token expired";
+			result = ExceptionController.AUTH_TOKEN_EXPIRED;
 		} else if (authId == -777) {
 			if (this.koalibeeService.delete(koalibeeId)) {
 				status = HttpStatus.OK;
@@ -388,9 +387,9 @@ public class KoalibeeController {
 	@GetMapping(path = "/get/all")
 	public ResponseEntity<List<Koalibee>> listAllKoalibees(@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		List<Koalibee> result = new ArrayList<>();
+		List<Koalibee> result;
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
@@ -424,9 +423,9 @@ public class KoalibeeController {
 	public ResponseEntity<List<Album>> getKoalibeeInventory(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		List<Album> result = new ArrayList<>();
+		List<Album> result;
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
@@ -460,9 +459,9 @@ public class KoalibeeController {
 	public ResponseEntity<List<Album>> getKoalibeeCreations(@Validated @PathVariable int koalibeeId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status;
 
-		List<Album> result = new ArrayList<>();
+		List<Album> result;
 
 		// Validate the JWS.
 		int authId = this.authService.reauthenticate(jws);
