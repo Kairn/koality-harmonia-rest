@@ -82,12 +82,12 @@ public class AuthService {
 
 		// Data element names
 		final String EMAIL = "email";
-		final String PASSWORD = "password";
+		final String PS = "password";
 
 		try {
 			// Authenticate a system administrator.
 			if (authData.get(EMAIL).equals(ADMIN_NAME)) {
-				if (SecurityUtility.isValidPassword(authData.get(PASSWORD), ADMIN_SALT, ADMIN_HASH)) {
+				if (SecurityUtility.isValidPassword(authData.get(PS), ADMIN_SALT, ADMIN_HASH)) {
 					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(-777, "", this.key);
 				} else {
@@ -97,7 +97,7 @@ public class AuthService {
 
 			// Authenticate a koalibee.
 			if (authData.get(EMAIL).contains("@")) {
-				if (SecurityUtility.isValidPassword(authData.get(PASSWORD), authData.get("passwordSalt"),
+				if (SecurityUtility.isValidPassword(authData.get(PS), authData.get("passwordSalt"),
 						authData.get("passwordHash"))) {
 					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(Integer.parseInt(authData.get("koalibeeId")),

@@ -48,11 +48,9 @@ public class TrackDaoImpl implements TrackDao {
 			tx = session.beginTransaction();
 			track = session.get(Track.class, trackId);
 			// Obtain audio data url if album is published.
-			if (track.getAlbum().getIsPublished().equals("T")) {
-				if (track.getAudio() != null && track.getAudioType() != null) {
-					track.setAudioDataUrl(
-							DataUtility.encodeBytesToDataUrlAudio(track.getAudio(), track.getAudioType()));
-				}
+			if (track.getAlbum().getIsPublished().equals("T") && track.getAudio() != null
+					&& track.getAudioType() != null) {
+				track.setAudioDataUrl(DataUtility.encodeBytesToDataUrlAudio(track.getAudio(), track.getAudioType()));
 			}
 			// Initialize album details.
 			track.setAlbum(track.getAlbum());

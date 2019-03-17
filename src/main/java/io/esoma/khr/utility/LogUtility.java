@@ -12,6 +12,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class LogUtility {
 
+	private LogUtility() {
+		// Include a private constructor to prevent instantiation.
+	}
+
 	public static final Logger ROOT_LOGGER;
 	public static final Logger MASTER_LOGGER;
 

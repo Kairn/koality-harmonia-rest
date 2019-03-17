@@ -186,7 +186,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"firstName\":\"eddy\",\"lastName\":\"soma\",\"email\":\"anothers@k.com\",\"password\":\"nnn\"}";
 
-		assertEquals(KoalibeeService.BAD_PASSWORD, this.koalibeeService.register(source));
+		assertEquals(KoalibeeService.BAD_PS, this.koalibeeService.register(source));
 
 	}
 
@@ -222,7 +222,7 @@ public class KoalibeeServiceTest {
 
 		final String source = "{\"email\":\"john.doe@example.com\"}";
 
-		assertEquals(KoalibeeService.BAD_PASSWORD, this.koalibeeService.login(source));
+		assertEquals(KoalibeeService.BAD_PS, this.koalibeeService.login(source));
 
 	}
 

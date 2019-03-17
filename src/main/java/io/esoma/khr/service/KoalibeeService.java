@@ -33,10 +33,17 @@ public class KoalibeeService {
 	public static final String BAD_FIRST_NAME = "error while reading firstName";
 	public static final String BAD_LAST_NAME = "error while reading lastName";
 	public static final String BAD_EMAIL = "error while reading email";
-	public static final String BAD_PASSWORD = "error while reading password";
+	public static final String BAD_PS = "error while reading password";
 	public static final String DUPLICATE_EMAIL = "email is already registered";
 	public static final String NULL_EMAIL = "email does not exist";
 	public static final String DATABASE_ERROR = "unknown database error occurred";
+
+	// Data element names
+	static final String FIRST_NAME = "firstName";
+	static final String LAST_NAME = "lastName";
+	static final String EMAIL = "email";
+	static final String PS = "password";
+	static final String ALBUM_ID = "albumId";
 
 	private KoalibeeDao koalibeeDao;
 	private AlbumDao albumDao;
@@ -73,12 +80,6 @@ public class KoalibeeService {
 	 *         occurs.
 	 */
 	public String register(String koalibeeData) {
-
-		// Data element names
-		final String FIRST_NAME = "firstName";
-		final String LAST_NAME = "lastName";
-		final String EMAIL = "email";
-		final String PASSWORD = "password";
 
 		JSONObject jo;
 
@@ -140,22 +141,22 @@ public class KoalibeeService {
 
 		// Validate password.
 		try {
-			String password = jo.getString(PASSWORD);
+			String password = jo.getString(PS);
 			if (password.length() < 6) {
-				return BAD_PASSWORD;
+				return BAD_PS;
 			} else {
 				String passwordSalt = SecurityUtility.getPasswordSaltStandard();
 				String passwordHash = SecurityUtility.getSHA256Digest(password + passwordSalt);
 				credentials.setPasswordSalt(passwordSalt);
 				credentials.setPasswordHash(passwordHash);
-				authData.put(PASSWORD, password);
+				authData.put(PS, password);
 				authData.put("passwordSalt", passwordSalt);
 				authData.put("passwordHash", passwordHash);
 				koalibee.setCredentials(credentials);
 			}
 		} catch (Exception e) {
-			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PASSWORD));
-			return BAD_PASSWORD;
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PS));
+			return BAD_PS;
 		}
 
 		// Each new account receives 100 free ETA coins.
@@ -182,10 +183,6 @@ public class KoalibeeService {
 	 */
 	public String login(String credentialsData) {
 
-		// Data element names
-		final String EMAIL = "email";
-		final String PASSWORD = "password";
-
 		JSONObject jo;
 
 		// Parse the JSON string.
@@ -208,11 +205,11 @@ public class KoalibeeService {
 		}
 		// Retrieve password.
 		try {
-			String password = jo.getString(PASSWORD);
-			authData.put(PASSWORD, password);
+			String password = jo.getString(PS);
+			authData.put(PS, password);
 		} catch (Exception e) {
-			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PASSWORD));
-			return BAD_PASSWORD;
+			LogUtility.ROOT_LOGGER.warn(String.format(LogUtility.MISSING_JSON_ELEMENT, PS));
+			return BAD_PS;
 		}
 
 		// Check if the user is a system administrator.
@@ -376,9 +373,6 @@ public class KoalibeeService {
 	 * @return true if the purchase is successful, or false if it fails.
 	 */
 	public boolean purchaseAlbum(int koalibeeId, String albumData) {
-
-		// Data element names
-		final String ALBUM_ID = "albumId";
 
 		JSONObject jo;
 
