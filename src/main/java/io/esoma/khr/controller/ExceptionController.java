@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import io.esoma.khr.utility.LogUtility;
+
 /**
  * 
  * The controller class that provides global exception handling methods for all
@@ -105,9 +107,7 @@ public class ExceptionController {
 		final String errorMessage = "The server has encountered an unknown error, please contact the server maintainer if you have questions.";
 
 		// Debug message
-		System.out.println("exception encountered, type: " + e.getClass().getName());
-
-		e.printStackTrace();
+		LogUtility.MASTER_LOGGER.fatal("Unexpected controller exception, stack trace:", e);
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
 
