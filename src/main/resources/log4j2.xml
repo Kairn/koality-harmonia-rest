@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="KhrConfiguration"
+	packages="io.esoma.khr">
+
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="%p: %m %ex%n" />
+		</Console>
+
+		<File name="masterAppender" fileName="logs/khr-master.log">
+			<PatternLayout>
+				<Pattern>%d{MMM-dd, HH:mm} %p: %c{1} [%t] %m %ex%n</Pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="masterLogger" level="warn" additivity="false">
+			<AppenderRef ref="masterAppender" level="warn" />
+		</Logger>
+
+		<Root level="info" additivity="true">
+			<AppenderRef ref="STDOUT" level="info" />
+		</Root>
+	</Loggers>
+
+</Configuration>
