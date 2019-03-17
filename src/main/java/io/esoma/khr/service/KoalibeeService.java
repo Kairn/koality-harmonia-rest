@@ -278,7 +278,7 @@ public class KoalibeeService {
 
 		// Try update the first name.
 		try {
-			String firstName = jo.getString("firstName");
+			String firstName = jo.getString(FIRST_NAME);
 			if (firstName.length() > 0) {
 				koalibee.setFirstName(firstName);
 			}
@@ -287,7 +287,7 @@ public class KoalibeeService {
 		}
 		// Try update the last name.
 		try {
-			String lastName = jo.getString("lastName");
+			String lastName = jo.getString(LAST_NAME);
 			if (lastName.length() > 0) {
 				koalibee.setLastName(lastName);
 			}
@@ -335,7 +335,7 @@ public class KoalibeeService {
 
 		// Try update the email.
 		try {
-			String email = jo.getString("email");
+			String email = jo.getString(EMAIL);
 			if (!this.koalibeeDao.getAllEmails().contains(email)) {
 				credentials.setEmail(email);
 			} else {
@@ -348,7 +348,7 @@ public class KoalibeeService {
 
 		// Try update the password.
 		try {
-			String password = jo.getString("password");
+			String password = jo.getString(PS);
 			String passwordSalt = SecurityUtility.getPasswordSaltStandard();
 			String passwordHash = SecurityUtility.getSHA256Digest(password + passwordSalt);
 			credentials.setPasswordSalt(passwordSalt);
