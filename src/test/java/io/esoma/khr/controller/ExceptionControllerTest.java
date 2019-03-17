@@ -12,6 +12,7 @@ import org.junit.runners.MethodSorters;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -59,6 +60,21 @@ public class ExceptionControllerTest {
 		assertEquals(400, result.getStatusCodeValue());
 
 		assertEquals("This request is missing <Auth-Token> header element, authentication may be required.",
+				result.getBody());
+
+	}
+
+	@Test
+	public void testHandleBadRequestBody() throws Exception {
+
+		final HttpMessageNotReadableException mockException = mock(HttpMessageNotReadableException.class);
+
+		ResponseEntity<String> result = this.exceptionController.handleBadRequestBody(mockException);
+
+		assertEquals(400, result.getStatusCodeValue());
+
+		assertEquals(
+				"This request is missing a request body, or the request body is incompatible with the type <java.lang.String>",
 				result.getBody());
 
 	}

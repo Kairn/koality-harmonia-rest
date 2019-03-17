@@ -61,6 +61,8 @@ public class AuthService {
 
 		this.lastAccessed = LocalDateTime.now().minusHours(24);
 
+		this.resetKey();
+
 	}
 
 	/**

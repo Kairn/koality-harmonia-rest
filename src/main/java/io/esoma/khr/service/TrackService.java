@@ -73,13 +73,19 @@ public class TrackService {
 
 		// Allow demo tracks to be return without authentication.
 		if (track.getIsDemo().equals("T")) {
+			// Truncate proxies.
+			track.setAlbum(null);
+			track.setAudio(null);
+			track.setAudioType(null);
 			return track;
 		}
 
 		// Verify ownership.
-		List<Album> albumList = this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(koalibeeId);
-		if (!albumList.contains(track.getAlbum()) && koalibeeId != -777) {
-			return null;
+		if (koalibeeId != -777) {
+			List<Album> albumList = this.koalibeeDao.getAllPurchasedAlbumsByKoalibeeId(koalibeeId);
+			if (!albumList.contains(track.getAlbum())) {
+				return null;
+			}
 		}
 
 		// Truncate proxies.

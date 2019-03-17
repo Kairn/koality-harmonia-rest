@@ -3,6 +3,7 @@ package io.esoma.khr.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,6 +104,7 @@ public class Koalibee implements Serializable {
 
 	@Lob
 	@Column(name = "AVATAR", columnDefinition = "BLOB")
+	@Basic(fetch = FetchType.LAZY)
 	public byte[] getAvatar() {
 		return avatar;
 	}

@@ -2,6 +2,7 @@ package io.esoma.khr.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,6 +53,23 @@ public class ExceptionController {
 				"This request is missing <%s> header element, authentication may be required.", e.getHeaderName());
 
 		return ResponseEntity.badRequest().body(missingHeaderMessage);
+
+	}
+
+	/**
+	 * 
+	 * Handles exceptions occurred due to the request body is missing or cannot be
+	 * converted into the appropriate type.
+	 * 
+	 * @param e the exception thrown.
+	 * @return an error message reporting on the unreadable request body.
+	 */
+	public ResponseEntity<String> handleBadRequestBody(HttpMessageNotReadableException e) {
+
+		final String badBodyMessage = String.format(
+				"This request is missing a request body, or the request body is incompatible with the type <java.lang.String>");
+
+		return ResponseEntity.badRequest().body(badBodyMessage);
 
 	}
 

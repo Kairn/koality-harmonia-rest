@@ -3,6 +3,7 @@ package io.esoma.khr.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -86,6 +87,7 @@ public class Album implements Serializable {
 
 	@Lob
 	@Column(name = "ARTWORK", columnDefinition = "BLOB")
+	@Basic(fetch = FetchType.LAZY)
 	public byte[] getArtwork() {
 		return artwork;
 	}

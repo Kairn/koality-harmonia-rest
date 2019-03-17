@@ -3,7 +3,6 @@ package io.esoma.khr.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -54,7 +53,7 @@ public class AlbumDaoImpl implements AlbumDao {
 						DataUtility.encodeBytesToDataUrlImage(album.getArtwork(), album.getArtworkType()));
 			}
 			// Initialize publisher details.
-			Hibernate.initialize(album.getKoalibee());
+			album.setKoalibee(album.getKoalibee());
 			tx.commit();
 		} catch (Exception e) {
 			// Debug message
