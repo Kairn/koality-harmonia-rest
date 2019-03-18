@@ -122,7 +122,7 @@ public class MomentService {
 	 * JSON string. The koalibee should have been authenticated first.
 	 * 
 	 * @param koalibeeId the ID of the poster.
-	 * @param moment     the JSON string sent from the request.
+	 * @param momentData     the JSON string sent from the request.
 	 * @return a positive integer if the posting succeeds, or 0 if it fails.
 	 */
 	public int postOne(int koalibeeId, String momentData) {

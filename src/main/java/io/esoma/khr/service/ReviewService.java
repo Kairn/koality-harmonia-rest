@@ -192,6 +192,7 @@ public class ReviewService {
 	 * Deletes a review permanently from the database. It can only be accessed by a
 	 * system administrator.
 	 * 
+	 * @param reviewId the ID of the review to be deleted.
 	 * @return true if the deletion is successful, or false if it fails.
 	 */
 	public boolean delete(int reviewId) {

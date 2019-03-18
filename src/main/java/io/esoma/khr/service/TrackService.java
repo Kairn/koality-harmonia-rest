@@ -256,7 +256,8 @@ public class TrackService {
 	 * Retrieve tracks from an album without audio data. Only tracks from published
 	 * albums can be viewed publicly.
 	 * 
-	 * @param albumId the ID of the album.
+	 * @param koalibeeId the ID of the album owner.
+	 * @param albumId    the ID of the album.
 	 * @return the track list, and list will be empty if the user is not the creator
 	 *         of an unpublished album.
 	 */

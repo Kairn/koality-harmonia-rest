@@ -41,7 +41,7 @@ public class DemoController {
 	 * Responds to a HTTP request of retrieving all demo albums. No authentication
 	 * token is needed.
 	 * 
-	 * @return
+	 * @return the list containing the demo albums.
 	 */
 	@GetMapping(path = "/albums")
 	public ResponseEntity<List<Album>> getDemoAlbums() {
