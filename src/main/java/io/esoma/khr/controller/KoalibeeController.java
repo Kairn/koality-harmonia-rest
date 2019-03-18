@@ -121,22 +121,6 @@ public class KoalibeeController {
 
 	/**
 	 * 
-	 * Handles a HTTP request of logging out a user in general.
-	 * 
-	 * @return a message indicating logout success.
-	 */
-	@PostMapping(path = "/logout")
-	public ResponseEntity<String> logout() {
-
-		// Expire all tokens.
-		this.authService.setToExpire();
-
-		return ResponseEntity.ok("successfully logged out");
-
-	}
-
-	/**
-	 * 
 	 * Responds to a HTTP request of retrieving a koalibee's profile information. A
 	 * header with the valid authentication token must be present.
 	 * 

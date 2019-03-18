@@ -193,19 +193,20 @@ public class SecurityUtilityTest {
 		assertTrue(header.contains("alg"));
 		assertTrue(payload.contains("999"));
 		assertTrue(payload.contains("\"email\":\"test@koality.com\""));
+		assertTrue(payload.contains("timeCreated"));
 
 	}
 
 	@Test
 	public void testParseAuthJwsV1() throws Exception {
 
-		final String source = "eyJhbGciOiJIUzI1NiJ9.eyJrb2FsaWJlZUlkIjoxLCJlbWFpbCI6ImpvaG5AbWFpbGluYXRvci5jb20ifQ.hPrNh8YxbzxwkqGul409yjRFp21uE8n7mchBomXqEtQ";
+		final String source = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrb2FsaWJlZUlkIjo5OTksImVtYWlsIjoiam9obkBtYWlsaW5hdG9yLmNvbSIsInRpbWVDcmVhdGVkIjoiMjAxNy0wOS0wOVQyMjozMDoxNSJ9.MJ8q7MzjnSb0DvUW3y8U8MlKzDD_2BQjYdWZYBuUMeM";
 
 		Object[] claims = SecurityUtility.parseAuthJws(source, testKey);
 
 		assertNotNull(claims);
 
-		assertEquals(1, claims[0]);
+		assertEquals(999, claims[0]);
 
 		assertEquals("john@mailinator.com", claims[1]);
 
@@ -214,15 +215,17 @@ public class SecurityUtilityTest {
 	@Test
 	public void testParseAuthJwsV2() throws Exception {
 
-		final String source = "eyJhbGciOiJIUzI1NiJ9.eyJrb2FsaWJlZUlkIjo5OTksImVtYWlsIjoidGVzdEB0ZXN0Lm5ldCJ9.uZm2CerHsAKvKLZu6SF6xx89tYX4ccNVwcoC23FsxEA";
+		final String source = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrb2FsaWJlZUlkIjoxLCJlbWFpbCI6InRlc3RAdGVzdC5uZXQiLCJ0aW1lQ3JlYXRlZCI6IjIwMTctMTItMDlUMjI6MzA6MTUifQ.5WIAXaQRw21_o4v_bMliGJLZStIIz-A-1cLRRb0kXDA";
 
 		Object[] claims = SecurityUtility.parseAuthJws(source, testKey);
 
 		assertNotNull(claims);
 
-		assertEquals(999, claims[0]);
+		assertEquals(1, claims[0]);
 
 		assertEquals("test@test.net", claims[1]);
+
+		assertEquals("2017-12-09T22:30:15", claims[2]);
 
 	}
 
@@ -252,14 +255,14 @@ public class SecurityUtilityTest {
 	@Test
 	public void testJwsHasNotExpiredY1() throws Exception {
 
-		assertFalse(SecurityUtility.jwsHasNotExpired(LocalDateTime.now().minusMinutes(30)));
+		assertFalse(SecurityUtility.jwsHasNotExpired(LocalDateTime.now().minusMinutes(75)));
 
 	}
 
 	@Test
 	public void testJwsHasNotExpiredY2() throws Exception {
 
-		assertFalse(SecurityUtility.jwsHasNotExpired(LocalDateTime.now().minusMinutes(16)));
+		assertFalse(SecurityUtility.jwsHasNotExpired(LocalDateTime.now().minusMinutes(31)));
 
 	}
 

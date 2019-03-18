@@ -38,41 +38,34 @@ public class AuthService {
 		 * Generates a random signing key with sufficient length. It will be different
 		 * each time the server reboots.
 		 */
-		key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+		this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+		this.lastAccessed = LocalDateTime.now();
 	}
 
 	/**
-	 * The most recent moment when a valid token is processed. It is used to keep
-	 * track of session expiration time.
+	 * The moment when a new signing key is generated. It is used to keep track of
+	 * the age of the key so the system can automatically refresh it after every 24
+	 * hours.
 	 */
 	private LocalDateTime lastAccessed;
 
 	/**
-	 * Refreshes the signing key to prevent the client from resuing the same token
-	 * after a session expires.
+	 * Refreshes the signing key to prevent brute force attacks.
 	 */
-	private void resetKey() {
+	void resetKey() {
 
 		key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-	}
-
-	/**
-	 * Forces all tokens to expire.
-	 */
-	public void setToExpire() {
-
-		this.lastAccessed = LocalDateTime.now().minusHours(24);
-
-		this.resetKey();
+		this.lastAccessed = LocalDateTime.now();
 
 	}
 
 	/**
 	 * 
 	 * Authenticates a user's credentials data by validating the password. It can
-	 * authenticate both regular users and system administrator. It will update the
-	 * time of last access if the credentials are valid.
+	 * authenticate both regular users and system administrator. It will first
+	 * refresh the signing key if the last one has been used for more than 24 hours.
 	 * 
 	 * @param authData the credentials map prepared by koalibee service.
 	 * @return a JSON web token representing the user if the credentials are valid,
@@ -84,11 +77,15 @@ public class AuthService {
 		final String EMAIL = "email";
 		final String PS = "password";
 
+		// Check if the signing key needs to be refreshed.
+		if (LocalDateTime.now().compareTo(this.lastAccessed.plusHours(24)) > 0) {
+			this.resetKey();
+		}
+
 		try {
 			// Authenticate a system administrator.
 			if (authData.get(EMAIL).equals(ADMIN_NAME)) {
 				if (SecurityUtility.isValidPassword(authData.get(PS), ADMIN_SALT, ADMIN_HASH)) {
-					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(-777, "", this.key);
 				} else {
 					return INVALID_ADMIN_CREDENTIALS;
@@ -99,7 +96,6 @@ public class AuthService {
 			if (authData.get(EMAIL).contains("@")) {
 				if (SecurityUtility.isValidPassword(authData.get(PS), authData.get("passwordSalt"),
 						authData.get("passwordHash"))) {
-					this.lastAccessed = LocalDateTime.now();
 					return SecurityUtility.buildAuthJws(Integer.parseInt(authData.get("koalibeeId")),
 							authData.get(EMAIL), this.key);
 				} else {
@@ -116,33 +112,36 @@ public class AuthService {
 
 	/**
 	 * 
-	 * Retrieves the koalibee ID from a JWS. This method will update the time of
-	 * last access if the token has not expired, and it automatically generates a
-	 * new key if the session has expired.
+	 * Retrieves the koalibee ID from a JWS. This method will first refresh the
+	 * signing key if it is necessary.
 	 * 
 	 * @param jws the JWS sent from the quest.
 	 * @return the koalibee ID if the JWS represents a valid user, or -777 when a
-	 *         system administrator accesses the server, or 0 for unauthorized
-	 *         users.
+	 *         system administrator accesses the server, or 0 if the JWS is invalid.
 	 */
 	public int reauthenticate(String jws) {
 
-		// Check session expiration.
-		try {
-			if (!SecurityUtility.jwsHasNotExpired(this.lastAccessed)) {
-				this.resetKey();
-				return -1;
-			}
-		} catch (Exception e) {
-			return 0;
+		// Check if the signing key needs to be refreshed.
+		if (LocalDateTime.now().compareTo(this.lastAccessed.plusHours(24)) > 0) {
+			this.resetKey();
+			return -1;
 		}
 
 		Integer id;
+		LocalDateTime timeCreated;
 
 		try {
-			id = (Integer) SecurityUtility.parseAuthJws(jws, this.key)[0];
-			this.lastAccessed = LocalDateTime.now();
-			return id;
+			// Parse claims.
+			Object[] claims = SecurityUtility.parseAuthJws(jws, this.key);
+			id = (Integer) claims[0];
+			timeCreated = LocalDateTime.parse(claims[2].toString());
+
+			// Check session expiration.
+			if (SecurityUtility.jwsHasNotExpired(timeCreated)) {
+				return id;
+			} else {
+				return -1;
+			}
 		} catch (Exception e) {
 			return 0;
 		}

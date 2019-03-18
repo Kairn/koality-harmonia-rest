@@ -33,14 +33,6 @@ public class AuthServiceTest {
 		// No content yet.
 	}
 
-	public void testSetToExpire() throws Exception {
-
-		this.authService.setToExpire();
-
-		assertEquals(-1, this.authService.reauthenticate("some expired token"));
-
-	}
-
 	@Test
 	public void testAuthenticateAdminV() throws Exception {
 
@@ -158,9 +150,9 @@ public class AuthServiceTest {
 
 		String jws = this.authService.authenticate(authData);
 
-		this.authService.setToExpire();
+		this.authService.resetKey();
 
-		assertEquals(-1, this.authService.reauthenticate(jws));
+		assertEquals(0, this.authService.reauthenticate(jws));
 
 	}
 
@@ -173,7 +165,7 @@ public class AuthServiceTest {
 
 		String jws = this.authService.authenticate(authData);
 
-		this.authService.setToExpire();
+		this.authService.resetKey();
 
 		assertNotEquals(-777, this.authService.reauthenticate(jws));
 
