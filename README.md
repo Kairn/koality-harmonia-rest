@@ -30,12 +30,11 @@ This repository maintains the application's server-side source code, which is in
 ## Features
 *You can find the details in the repository that maintains the client-side source code. Currently, it is not available as the user interface is still under development.*
 
-## Technical Points
-### Testing
+## Testing
 The test code in this project is written with JUnit as a base framework, and it utilizes the `spring-test` module which provides support for integration tests that require a spring context environment or a dispatcher servlet. There are more than 400 tests in the test packages which cover almost every execution path in the source code methods. However, the integrated Spring MVC tests are still experimental and not meant to test the full functionalities of all RESTful endpoints.
 
-### Security
+## Security
 The server-side uses JSON Web Tokens (JWT) to handle user authentication and authorization. After the client submits a valid email/password credentials pair, a cryptographically signed JWT is generated and sent back to the client for future requests that require authentication. Each token is only valid for 30 minutes, and the user will have to login again after the current session expires. The signing key will refresh every 24 hours to prevent brute force attacks.
 
-### Documentation
-Coming soon.
+## Issues
+Although the server has gone through a moderate level of manual testing, it could still have unexpected behaviors under uncommon circumstances. I will continue to make the best effort to fix all potential bugs and security vulnerabilities as the front-end application is being developed. All issues should be reported back to me directly.
