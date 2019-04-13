@@ -1,4 +1,4 @@
--- ==================== DROP SEQUENCES ====================
+---- ==================== DROP SEQUENCES ====================
 --DROP SEQUENCE SEQ_GENRE_ID;
 --DROP SEQUENCE SEQ_KOALIBEE_ID;
 --DROP SEQUENCE SEQ_CREDENTIALS_ID;
@@ -6,8 +6,8 @@
 --DROP SEQUENCE SEQ_ALBUM_ID;
 --DROP SEQUENCE SEQ_TRACK_ID;
 --DROP SEQUENCE SEQ_REVIEW_ID;
-
--- ==================== DROP TABLES ====================
+--
+---- ==================== DROP TABLES ====================
 --DROP TABLE KOALIBEE_ALBUM;
 --DROP TABLE REVIEW;
 --DROP TABLE MOMENT;
