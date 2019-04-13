@@ -135,7 +135,7 @@ public class MvcIntegrationTest {
 	@Test
 	public void testGetFirstReview() throws Exception {
 
-		MvcResult result = this.mvc.perform(get("/review/get/1").accept(MediaType.APPLICATION_JSON_UTF8))
+		MvcResult result = this.mvc.perform(get("/review/get/2").accept(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("Wonderful composition, thanks for sharing!"));
