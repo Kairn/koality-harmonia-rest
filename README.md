@@ -28,7 +28,7 @@ This repository maintains the application's server-side source code, which is in
 9. Take the built artifact (a `.war` file) and deploy it with a server (make sure to add the environmental variables if it is running in a different environment).
 
 ## Features
-*You can find the details in the repository that maintains the client-side source code. Currently, it is not available as the user interface is still under development.*
+*You can find the details in the repository that maintains the client-side source code (after its official deployment). Here is [the link](https://github.com/Kairn/koality-harmonia-portal).*
 
 ## Testing
 The test code in this project is written with JUnit as a base framework, and it utilizes the `spring-test` module which provides support for integration tests that require a spring context environment or a dispatcher servlet. There are more than 400 tests in the test packages which cover almost every execution path in the source code methods. However, the integrated Spring MVC tests are still experimental and not meant to test the full functionalities of all RESTful endpoints.
