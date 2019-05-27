@@ -13,6 +13,8 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<!-- Spring Framework Version -->
 		<org.springframework.version>5.1.4.RELEASE</org.springframework.version>
+		<!-- Jackson Version -->
+		<com.fasterxml.jackson.version>2.9.9</com.fasterxml.jackson.version>
 		<!-- Sonar Properties -->
 		<sonar.sources>src/main/java</sonar.sources>
 		<sonar.exclusions>**/target/**</sonar.exclusions>
@@ -146,19 +148,19 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.9.8</version>
+			<version>${com.fasterxml.jackson.version}</version>
 		</dependency>
 		<!-- Jackson Annotations -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.9.8</version>
+			<version>${com.fasterxml.jackson.version}</version>
 		</dependency>
 		<!-- Jackson Databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.8</version>
+			<version>${com.fasterxml.jackson.version}</version>
 		</dependency>
 		<!-- JSON In Java -->
 		<dependency>
