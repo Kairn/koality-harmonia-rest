@@ -23,6 +23,14 @@ import io.esoma.khr.model.Album;
 import io.esoma.khr.service.AlbumService;
 import io.esoma.khr.service.KoalibeeServiceTest;
 
+/**
+ * 
+ * @deprecated This test class is no longer needed due to the DemoController is
+ *             deprecated.
+ * 
+ * @author Eddy Soma
+ *
+ */
 @RunWith(MockitoJUnitRunner.StrictStubs.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DemoControllerTest {
