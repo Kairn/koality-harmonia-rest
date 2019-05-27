@@ -140,7 +140,7 @@ public class TrackController {
 	 * @param jws     the signed authentication token.
 	 * @return a general message indicating success or failure.
 	 */
-	@DeleteMapping(path = "delete/{trackId}")
+	@DeleteMapping(path = "/delete/{trackId}")
 	public ResponseEntity<String> deleteTrackFromAlbum(@Validated @PathVariable int trackId,
 			@Validated @RequestHeader(name = "Auth-Token") String jws) {
 
@@ -225,7 +225,7 @@ public class TrackController {
 			if (!result.isEmpty()) {
 				status = HttpStatus.OK;
 			} else {
-				status = HttpStatus.NOT_FOUND;
+				status = HttpStatus.NO_CONTENT;
 			}
 		}
 

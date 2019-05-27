@@ -280,7 +280,7 @@ public class TrackControllerTest {
 
 		ResponseEntity<List<Track>> result = this.trackController.getTracksFromAlbum(1, "2j");
 
-		assertEquals(404, result.getStatusCodeValue());
+		assertEquals(204, result.getStatusCodeValue());
 
 		assertEquals(0, result.getBody().size());
 

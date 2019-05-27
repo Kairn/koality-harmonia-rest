@@ -402,6 +402,11 @@ public class KoalibeeService {
 		Album album = this.albumDao.getAlbumById(albumId);
 		Koalibee koalibee = this.koalibeeDao.getKoalibeeById(koalibeeId);
 
+		// Hotfix for publishers purchase his/her own album.
+		if (album.getKoalibee().getKoalibeeId() == koalibee.getKoalibeeId()) {
+			return this.koalibeeDao.purchaseAlbum(koalibeeId, albumId);
+		}
+
 		if (koalibee.getEtaBalance() < album.getEtaPrice()) {
 			return false;
 		} else {

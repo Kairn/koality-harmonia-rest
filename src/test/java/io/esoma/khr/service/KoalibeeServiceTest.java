@@ -392,6 +392,7 @@ public class KoalibeeServiceTest {
 
 		final Album album = new Album(3);
 		album.setEtaPrice(50);
+		album.setKoalibee(new Koalibee(2));
 
 		final Koalibee koalibee = new Koalibee(1);
 		koalibee.setEtaBalance(30);
@@ -408,23 +409,44 @@ public class KoalibeeServiceTest {
 	}
 
 	@Test
+	public void testPurchaseAlbumSO() throws Exception {
+
+		final Album album = new Album(6);
+		album.setEtaPrice(500);
+		album.setKoalibee(new Koalibee(1));
+
+		final Koalibee koalibee = new Koalibee(1);
+		koalibee.setEtaBalance(300);
+
+		when(this.albumDao.getAlbumById(6)).thenReturn(album);
+		when(this.koalibeeDao.getKoalibeeById(1)).thenReturn(koalibee);
+		this.koalibeeService.setAlbumDao(albumDao);
+		this.koalibeeService.setKoalibeeDao(koalibeeDao);
+
+		final String source = "{\"albumId\":\"6\"}";
+
+		assertTrue(this.koalibeeService.purchaseAlbum(1, source));
+
+	}
+
+	@Test
 	public void testPurchaseAlbumS() throws Exception {
 
-		final Koalibee koalibee = new Koalibee(8);
+		final Koalibee koalibee = new Koalibee(7);
 		koalibee.setEtaBalance(400);
 
 		final Album album = new Album(8);
 		album.setEtaPrice(150);
-		album.setKoalibee(koalibee);
+		album.setKoalibee(new Koalibee(2));
 
 		when(this.albumDao.getAlbumById(8)).thenReturn(album);
-		when(this.koalibeeDao.getKoalibeeById(8)).thenReturn(koalibee);
+		when(this.koalibeeDao.getKoalibeeById(7)).thenReturn(koalibee);
 		this.koalibeeService.setAlbumDao(albumDao);
 		this.koalibeeService.setKoalibeeDao(koalibeeDao);
 
 		final String source = "{\"albumId\":\"8\"}";
 
-		assertTrue(this.koalibeeService.purchaseAlbum(8, source));
+		assertTrue(this.koalibeeService.purchaseAlbum(7, source));
 
 	}
 
