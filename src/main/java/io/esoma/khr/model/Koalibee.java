@@ -31,6 +31,8 @@ import javax.persistence.Transient;
 @Table(name = "KOALIBEE")
 public class Koalibee implements Serializable {
 
+	public static final int[] PREMIUM_USERS = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+
 	private static final long serialVersionUID = 1L;
 
 	private int koalibeeId;

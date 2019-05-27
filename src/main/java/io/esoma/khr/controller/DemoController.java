@@ -18,6 +18,9 @@ import io.esoma.khr.service.AlbumService;
  * The controller class that is responsible for retrieving data and materials
  * that are publicly accessible to non-registered visitors.
  * 
+ * @deprecated This class is no longer being used, and its functionality has
+ *             been integrated into AlbumController.
+ * 
  * @author Eddy Soma
  *
  */

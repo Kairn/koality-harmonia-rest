@@ -55,6 +55,7 @@ public class AlbumControllerTest {
 		albumList.add(new Album(1));
 		albumList.add(new Album(5));
 		albumList.add(new Album(7));
+		albumList.add(new Album(8));
 
 	}
 
@@ -70,6 +71,7 @@ public class AlbumControllerTest {
 		when(this.authService.reauthenticate("exj")).thenReturn(-1);
 		when(this.authService.reauthenticate("adj")).thenReturn(-777);
 		when(this.authService.reauthenticate("1j")).thenReturn(1);
+		when(this.authService.reauthenticate("14j")).thenReturn(14);
 
 		when(this.albumService.getOne(anyInt())).thenReturn(null);
 		when(this.albumService.create(anyInt(), anyString())).thenReturn(0);
@@ -77,8 +79,8 @@ public class AlbumControllerTest {
 		when(this.albumService.delete(anyInt(), anyInt())).thenReturn(false);
 		when(this.albumService.publish(anyInt(), anyInt(), anyString())).thenReturn(false);
 		when(this.albumService.promote(anyInt(), anyInt())).thenReturn(false);
-		when(this.albumService.getAll()).thenReturn(albumList);
-		when(this.albumService.getPublished()).thenReturn(albumList);
+		when(this.albumService.getAll()).thenReturn(new ArrayList<>(albumList));
+		when(this.albumService.getPublished()).thenReturn(new ArrayList<>(albumList));
 
 		this.albumController.setAuthService(this.authService);
 		this.albumController.setAlbumService(this.albumService);
@@ -434,7 +436,7 @@ public class AlbumControllerTest {
 
 		assertEquals(200, result.getStatusCodeValue());
 
-		assertEquals(3, result.getBody().size());
+		assertEquals(4, result.getBody().size());
 
 	}
 
@@ -450,9 +452,20 @@ public class AlbumControllerTest {
 	}
 
 	@Test
-	public void testGetAllPublicationsS() throws Exception {
+	public void testGetAllPublicationsPS() throws Exception {
 
 		ResponseEntity<List<Album>> result = this.albumController.getAllPublications("1j");
+
+		assertEquals(200, result.getStatusCodeValue());
+
+		assertEquals(4, result.getBody().size());
+
+	}
+
+	@Test
+	public void testGetAllPublicationsNPS() throws Exception {
+
+		ResponseEntity<List<Album>> result = this.albumController.getAllPublications("14j");
 
 		assertEquals(200, result.getStatusCodeValue());
 

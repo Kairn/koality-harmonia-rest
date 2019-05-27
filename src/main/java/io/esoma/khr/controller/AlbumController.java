@@ -1,6 +1,7 @@
 package io.esoma.khr.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.esoma.khr.model.Album;
+import io.esoma.khr.model.Koalibee;
 import io.esoma.khr.service.AlbumService;
 import io.esoma.khr.service.AuthService;
 
@@ -355,7 +357,21 @@ public class AlbumController {
 		int authId = this.authService.reauthenticate(jws);
 
 		if (authId == -777 || authId > 0) {
-			return ResponseEntity.ok(this.albumService.getPublished());
+			List<Album> albumList = this.albumService.getPublished();
+
+			// Filter list for non-premium users.
+			for (int i = 0; i < Koalibee.PREMIUM_USERS.length; ++i) {
+				if (authId == Koalibee.PREMIUM_USERS[i]) {
+					return ResponseEntity.ok(albumList);
+				}
+			}
+
+			List<Integer> basicList = Arrays.asList(Album.BASIC_COLLECTION);
+			albumList.removeIf((Album album) -> {
+				return !basicList.contains(album.getAlbumId());
+			});
+
+			return ResponseEntity.ok(albumList);
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ArrayList<Album>());
 		}

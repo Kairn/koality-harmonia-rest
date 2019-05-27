@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 @Table(name = "ALBUM")
 public class Album implements Serializable {
 
+	public static final Integer[] BASIC_COLLECTION = new Integer[] { 1, 2, 4, 5, 7, 9, 17, 24, 28 };
+
 	private static final long serialVersionUID = 1L;
 
 	private int albumId;
