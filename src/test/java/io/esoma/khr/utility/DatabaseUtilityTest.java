@@ -11,8 +11,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import io.esoma.khr.utility.DatabaseUtility;
-
 public class DatabaseUtilityTest {
 
 	@BeforeClass
