@@ -101,7 +101,7 @@ public class MvcIntegrationTest {
 	@Test
 	public void testGetFirstMoment() throws Exception {
 
-		MvcResult result = this.mvc.perform(get("/moment/get/1").accept(MediaType.APPLICATION_JSON_UTF8))
+		MvcResult result = this.mvc.perform(get("/moment/get/1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("Welcome to Koality Harmonia!"));
@@ -112,7 +112,7 @@ public class MvcIntegrationTest {
 	public void testGetFirstKoalibee() throws Exception {
 
 		MvcResult result = this.mvc
-				.perform(get("/koalibee/get/1").accept(MediaType.APPLICATION_JSON_UTF8).header("Auth-Token", "adj"))
+				.perform(get("/koalibee/get/1").accept(MediaType.APPLICATION_JSON).header("Auth-Token", "adj"))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("Eddy"));
@@ -125,7 +125,7 @@ public class MvcIntegrationTest {
 	public void testGetFirstAlbum() throws Exception {
 
 		MvcResult result = this.mvc
-				.perform(get("/album/get/1").accept(MediaType.APPLICATION_JSON_UTF8).header("Auth-Token", "adj"))
+				.perform(get("/album/get/1").accept(MediaType.APPLICATION_JSON).header("Auth-Token", "adj"))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("transcendante"));
@@ -135,7 +135,7 @@ public class MvcIntegrationTest {
 	@Test
 	public void testGetFirstReview() throws Exception {
 
-		MvcResult result = this.mvc.perform(get("/review/get/2").accept(MediaType.APPLICATION_JSON_UTF8))
+		MvcResult result = this.mvc.perform(get("/review/get/2").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("Wonderful composition, thanks for sharing!"));
@@ -146,7 +146,7 @@ public class MvcIntegrationTest {
 	public void testGetAllTracks() throws Exception {
 
 		MvcResult result = this.mvc
-				.perform(get("/track/get/all").accept(MediaType.APPLICATION_JSON_UTF8).header("Auth-Token", "adj"))
+				.perform(get("/track/get/all").accept(MediaType.APPLICATION_JSON).header("Auth-Token", "adj"))
 				.andExpect(status().isOk()).andReturn();
 
 		assertTrue(result.getResponse().getContentAsString().contains("No. 2"));
