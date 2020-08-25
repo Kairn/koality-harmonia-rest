@@ -5,7 +5,9 @@
 
 Koality Harmonia is an open-source Java based web application that serves as an free online platform for individuals to publish and share music. You are able to sign up for a free account, create your own album and upload tracks, earn virtual coins in the system by active participation, and purchase other albums with these coins.  
 
-This repository maintains the application's server-side source code, which is independent of the application's user interface (currently still under active development). The server is a full-fledged RESTful service built with Spring MVC and Hibernate 5, and it utilizes a cloud based Oracle Database for data persistence. Give it a try, test a publicly accessible RESTful endpoint by hitting [this link](http://ec2-13-59-150-21.us-east-2.compute.amazonaws.com:8080/koality-harmonia-rest/moment/get/1).
+This repository maintains the application's server-side source code, which is independent of the application's user interface (currently still under active development). The server is a full-fledged RESTful service built with Spring MVC and Hibernate 5, and it utilizes a cloud based Oracle Database for data persistence.
+
+**Update: The database server for this project has been shut down, and the service is no longer available on the public web.**
 
 ## Build Project
 ### Prerequisites
