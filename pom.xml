@@ -14,7 +14,7 @@
 		<!-- Spring Framework Version -->
 		<org.springframework.version>5.3.20</org.springframework.version>
 		<!-- Jackson Version -->
-		<com.fasterxml.jackson.version>2.10.0.pr1</com.fasterxml.jackson.version>
+		<com.fasterxml.jackson.version>2.12.6.1</com.fasterxml.jackson.version>
 		<!-- Sonar Properties -->
 		<sonar.sources>src/main/java</sonar.sources>
 		<sonar.exclusions>**/target/**</sonar.exclusions>
